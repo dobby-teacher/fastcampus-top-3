@@ -1,0 +1,5 @@
+### 전체 작가 리스트 조회
+GET http://localhost:8080/authors
+
+### 1번 책에 대한 작가 조회
+GET http://localhost:8080/books/1/authors

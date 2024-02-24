@@ -1,0 +1,23 @@
+[source,http,options="nowrap"]
+----
+HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 338
+
+{
+  "id" : 1,
+  "title" : "Kafka on the Shore",
+  "publisher" : "Shinchosha",
+  "publishedDate" : "2002-09-12",
+  "authors" : [ {
+    "id" : 1,
+    "name" : "Haruki Murakami"
+  } ],
+  "reviews" : [ {
+    "id" : 1,
+    "content" : "Mystical and enthralling.",
+    "rating" : 5.0,
+    "createdDate" : "2024-01-31T15:00:00.000+00:00"
+  } ]
+}
+----

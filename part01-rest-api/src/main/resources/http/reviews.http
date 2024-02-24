@@ -1,0 +1,8 @@
+### 1번 책에 대한 리뷰 조회
+GET http://localhost:8080/books/1/reviews
+
+### 2번 책에 대한 리뷰 조회
+GET http://localhost:8080/books/2/reviews
+
+### 3번 책에 대한 리뷰 조회
+GET http://localhost:8080/books/3/reviews

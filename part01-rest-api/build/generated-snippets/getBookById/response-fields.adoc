@@ -1,0 +1,52 @@
+|===
+|Path|Type|Description
+
+|`+id+`
+|`+Number+`
+|책 번호
+
+|`+title+`
+|`+String+`
+|타이틀
+
+|`+publisher+`
+|`+String+`
+|출판사
+
+|`+publishedDate+`
+|`+String+`
+|출판일시
+
+|`+authors+`
+|`+Array+`
+|저자 리스트
+
+|`+authors.[].id+`
+|`+Number+`
+|저자 아이디
+
+|`+authors.[].name+`
+|`+String+`
+|저자 이름
+
+|`+reviews+`
+|`+Array+`
+|리뷰 리스트
+
+|`+reviews.[].id+`
+|`+Number+`
+|리뷰 번호
+
+|`+reviews.[].content+`
+|`+String+`
+|리뷰 내용
+
+|`+reviews.[].rating+`
+|`+Number+`
+|리뷰 평점
+
+|`+reviews.[].createdDate+`
+|`+String+`
+|리뷰 일시
+
+|===

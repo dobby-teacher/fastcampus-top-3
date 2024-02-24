@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.fastcampus.restapidemo.domain.books.controller.BookControllerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2024-02-13T00:49:00" hostname="dobby-macbook-m3.local" time="0.143">
+  <properties/>
+  <testcase name="getBookById()" classname="com.fastcampus.restapidemo.domain.books.controller.BookControllerTest" time="0.104"/>
+  <testcase name="getBooks()" classname="com.fastcampus.restapidemo.domain.books.controller.BookControllerTest" time="0.038"/>
+  <system-out><![CDATA[2024-02-13T09:48:59.394+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.fastcampus.restapidemo.domain.books.controller.BookControllerTest]: BookControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2024-02-13T09:48:59.400+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.fastcampus.restapidemo.RestApiDemoApplication for test class com.fastcampus.restapidemo.domain.books.controller.BookControllerTest
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.2)
+
+2024-02-13T09:48:59.408+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] c.f.r.d.b.controller.BookControllerTest  : Starting BookControllerTest using Java 17.0.10 with PID 14577 (started by cnabro in /Users/cnabro/project/fastcampus-top-3/part01-rest-api/rest-api-demo)
+2024-02-13T09:48:59.408+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] c.f.r.d.b.controller.BookControllerTest  : No active profile set, falling back to 1 default profile: "default"
+2024-02-13T09:48:59.495+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2024-02-13T09:48:59.499+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 3 ms. Found 3 JPA repository interfaces.
+2024-02-13T09:48:59.542+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2024-02-13T09:48:59.543+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2024-02-13T09:48:59.547+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2024-02-13T09:48:59.547+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2024-02-13T09:48:59.548+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:105ed1d8-c043-4e25-ba72-96a81cba8ed0 user=SA
+2024-02-13T09:48:59.549+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2024-02-13T09:48:59.573+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2024-02-13T09:48:59.576+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2024-02-13T09:48:59.660+09:00  WARN 14577 --- [rest-api-demo] [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2024-02-13T09:49:00.056+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2024-02-13T09:49:00.056+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2024-02-13T09:49:00.058+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+2024-02-13T09:49:00.063+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 6 ms
+2024-02-13T09:49:00.071+09:00  INFO 14577 --- [rest-api-demo] [    Test worker] c.f.r.d.b.controller.BookControllerTest  : Started BookControllerTest in 0.669 seconds (process running for 3.454)
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /books/1
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8"]
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.fastcampus.restapidemo.domain.books.controller.BookController
+           Method = com.fastcampus.restapidemo.domain.books.controller.BookController#getBookById(Long)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = {"id":1,"title":"Kafka on the Shore","publisher":"Shinchosha","publishedDate":"2002-09-12","authors":[{"id":1,"name":"Haruki Murakami"}],"reviews":[{"id":1,"content":"Mystical and enthralling.","rating":5.0,"createdDate":"2024-01-31T15:00:00.000+00:00"}]}
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+
+MockHttpServletRequest:
+      HTTP Method = GET
+      Request URI = /books
+       Parameters = {}
+          Headers = [Content-Type:"application/json;charset=UTF-8"]
+             Body = null
+    Session Attrs = {}
+
+Handler:
+             Type = com.fastcampus.restapidemo.domain.books.controller.BookController
+           Method = com.fastcampus.restapidemo.domain.books.controller.BookController#getBooks(String)
+
+Async:
+    Async started = false
+     Async result = null
+
+Resolved Exception:
+             Type = null
+
+ModelAndView:
+        View name = null
+             View = null
+            Model = null
+
+FlashMap:
+       Attributes = null
+
+MockHttpServletResponse:
+           Status = 200
+    Error message = null
+          Headers = [Content-Type:"application/json"]
+     Content type = application/json
+             Body = [{"id":1,"title":"Kafka on the Shore","publisher":"Shinchosha","publishedDate":"2002-09-12","authors":[{"id":1,"name":"Haruki Murakami"}],"reviews":[{"id":1,"content":"Mystical and enthralling.","rating":5.0,"createdDate":"2024-01-31T15:00:00.000+00:00"}]},{"id":2,"title":"A Game of Thrones","publisher":"Bantam Books","publishedDate":"1996-08-06","authors":[{"id":2,"name":"George R.R. Martin"}],"reviews":[{"id":2,"content":"A captivating tale of power and betrayal.","rating":4.5,"createdDate":"2024-02-01T15:00:00.000+00:00"}]}]
+    Forwarded URL = null
+   Redirected URL = null
+          Cookies = []
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

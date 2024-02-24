@@ -1,5 +1,0 @@
-### 전체 책 리스트 조회
-GET http://localhost:8080/books
-
-### 단건 책 조회
-GET http://localhost:8080/books/1

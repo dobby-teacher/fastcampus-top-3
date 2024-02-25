@@ -11,8 +11,8 @@
 - org.springframework.boot:spring-boot-starter-actuator
 - org.projectlombok:lombok
 - com.h2database:h2
-- net.devh:grpc-server-spring-boot-starter:2.15.0.RELEASE
-- javax.annotation:javax.annotation-api:1.3.2
+- net.devh:grpc-server-spring-boot-starter
+- javax.annotation:javax.annotation-api
 - io.grpc:grpc-netty-shaded
 - io.grpc:grpc-protobuf
 - io.grpc:grpc-stub

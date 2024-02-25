@@ -9,7 +9,6 @@
 ### 실습 Spring+gRPC 관련 스택
 - org.springframework.boot:spring-boot-starter
 - org.springframework.boot:spring-boot-starter-web
-- org.springframework.boot:spring-boot-starter-data-jpa
 - org.springframework.boot:spring-boot-starter-actuator
 - org.projectlombok:lombok
 - net.devh:grpc-client-spring-boot-starter

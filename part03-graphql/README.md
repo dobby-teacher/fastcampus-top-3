@@ -16,11 +16,14 @@
 - 'org.springframework.boot:spring-boot-starter-test'
 - 'org.springframework:spring-webflux'
 - 'org.springframework.graphql:spring-graphql-test'
+- 'com.graphql-java:graphql-java-extended-scalars:21.0'
+- 'org.springframework.boot:spring-boot-starter-security'
 
 ### 실습 순서
 - GraphQL 서버 구축 및 설정
 - 스키마 정의 및 데이터베이스 연동
-- 클라이언트와 상호작용하면서 실습 진행
+- GraphQL Directive 구현
+- GraphQL Instrumentation 구현
 - GraphQL 문서화 
 
 ### 실습 항목
@@ -42,15 +45,17 @@
   - 이전 REST API 시간에 만들어둔 온라인 서점의 설계 및 구현 활용
 - GraphQL 스키마와 엔티티를 기반 데이터베이스 연동
 
-#### GraphQL Directive, Instrumentation 구현
-- GraphQL 인증 Directive 구현
-- GraphQL Instrumentation 구현
+#### GraphQL Directive 구현
+- GraphQL 인증 Directive 구현 (+ Spring Security)
 
-#### 클라이언트와 상호작용하면서 실습 진행
-- spring-boot-starter-graphql 내장 GraphiQL을 통한 테스트
+#### GraphQL Instrumentation 구현
+- PerformanceMonitoringInstrumentation 구현
+- GraphQL FieldAccessLoggingInstrumentation 구현
 
 #### GraphQL 문서화
 - Voyager 연동
+  - https://graphql-kit.com/graphql-voyager/
 - GraphQL Playground 연동
+  - https://github.com/graphql/graphql-playground
 
 

@@ -1,10 +1,7 @@
 package com.fastcampus.demographql.global.config;
 
 import com.fastcampus.demographql.global.directive.AuthenticationDirective;
-import graphql.Scalars;
 import graphql.scalars.ExtendedScalars;
-import graphql.schema.GraphQLDirective;
-import graphql.schema.idl.RuntimeWiring;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.graphql.execution.RuntimeWiringConfigurer;

@@ -2,12 +2,14 @@ scalar Date
 scalar DateTime
 scalar Long
 
+directive @auth on FIELD_DEFINITION
+
 type Query {
     # for test
     getVersion: Version
 
     # Author
-    getAllAuthors: [Author]
+    getAllAuthors: [Author] @auth
     getAuthorById(id: ID!): Author
     getBookById(id: ID!): Book
     getBooks: [Book]

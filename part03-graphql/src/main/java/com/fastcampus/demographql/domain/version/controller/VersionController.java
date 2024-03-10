@@ -1,6 +1,6 @@
-package com.fastcampus.demographql.domain.controller;
+package com.fastcampus.demographql.domain.version.controller;
 
-import com.fastcampus.demographql.domain.entity.Version;
+import com.fastcampus.demographql.domain.version.entity.Version;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 

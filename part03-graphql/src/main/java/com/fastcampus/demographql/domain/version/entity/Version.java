@@ -1,4 +1,4 @@
-package com.fastcampus.demographql.domain.entity;
+package com.fastcampus.demographql.domain.version.entity;
 
 import java.util.Date;
 

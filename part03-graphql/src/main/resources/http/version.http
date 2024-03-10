@@ -1,0 +1,9 @@
+### GraphQL로 Version 스키마 조회
+GRAPHQL http://localhost:8080/graphql
+
+{
+  getVersion {
+    name
+    releaseDate
+  }
+}

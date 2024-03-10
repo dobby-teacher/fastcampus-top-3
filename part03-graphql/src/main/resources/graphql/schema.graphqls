@@ -1,0 +1,8 @@
+type Query {
+    getVersion: Version     # for test
+}
+
+type Version {
+    name: String,
+    releaseDate: String
+}

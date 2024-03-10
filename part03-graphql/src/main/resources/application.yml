@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: demo-grapqhl
+
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+    schema:
+      inspection:
+        enabled: true

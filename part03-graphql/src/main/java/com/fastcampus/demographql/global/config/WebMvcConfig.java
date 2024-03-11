@@ -8,10 +8,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/voyager.html")
+        registry.addResourceHandler("/voyager/**")
                 .addResourceLocations("classpath:/static/voyager/");
 
-        registry.addResourceHandler("/playground.html")
+        registry.addResourceHandler("/playground/**")
                 .addResourceLocations("classpath:/static/playground/");
     }
 }

@@ -6,7 +6,7 @@
 - Git
 - OpenJDK 17
 
-### 실습 Spring+gRPC 관련 스택
+### 실습 Spring+GraphQL 관련 스택
 - 'org.springframework.boot:spring-boot-starter-data-jpa'
 - 'org.springframework.boot:spring-boot-starter-graphql'
 - 'org.springframework.boot:spring-boot-starter-web'

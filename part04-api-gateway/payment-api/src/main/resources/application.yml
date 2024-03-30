@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: payment-api
+
+server:
+  port: 9000

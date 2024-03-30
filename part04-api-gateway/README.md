@@ -34,7 +34,6 @@
 - 1.1. 개발 환경 설정
     - 1.1.1. Spring Boot 프로젝트 생성
     - 1.1.2. Spring Cloud Gateway 의존성 추가
-- 1.2. 기존 rest-api를 micro service로 분해    
 - 1.3. 기본적인 Gateway 라우터 설정
     - 1.3.1. application.yml을 이용한 라우트 설정
     - 1.3.2. Java Config를 이용한 라우트 설정

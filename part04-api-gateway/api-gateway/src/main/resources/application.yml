@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: payment-api
+          uri: http://localhost:9000
+          order: 1
+          predicates:
+            - Path=/payments/** # 특정 경로로 오는 요청을 처리
+          filters:
+            - RewritePath=/payments/(?<segment>.*),/v1/payments/$\{segment}
+        - id: book-api
+          uri: http://localhost:9001
+          order: 1
+          predicates:
+            - Path=/books/**
+          filters:
+            - RewritePath=/books/(?<segment>.*),/v1/books/$\{segment}

@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: book-api
+
+server:
+  port: 9001

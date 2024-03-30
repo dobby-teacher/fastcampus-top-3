@@ -1,0 +1,23 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: service-discovery
+
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+    region: default
+
+  # Renews Threshold => 분당 heartbeat 수 (기본값 30초) * Instance 수 + Spring 에서 구성하는 최소 Instance 수 (1) * renewal-percent-threshold 값 계산 후 반올림을 한다.
+  # ex: 2 * 1 + 1 * 0.85 = 3
+  # Renews (last min) => 분당 heartbeat 수 (기본값 30초) * Instance 수
+  # ex: 2 * 1 = 2
+  server:
+    renewal-percent-threshold: 0 # 이 값은 분당 예상 heartbeat 를 계산하는 데 사용

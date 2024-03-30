@@ -5,16 +5,28 @@ spring:
     gateway:
       routes:
         - id: payment-api
-          uri: http://localhost:9000
+          uri: lb://payment-api
           order: 1
           predicates:
             - Path=/payments/** # 특정 경로로 오는 요청을 처리
           filters:
             - RewritePath=/payments/(?<segment>.*),/v1/payments/$\{segment}
         - id: book-api
-          uri: http://localhost:9001
+          uri: lb://book-api
           order: 1
           predicates:
             - Path=/books/**
           filters:
             - RewritePath=/books/(?<segment>.*),/v1/books/$\{segment}
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9090/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+
+    rest-template-timeout:
+      connect-timeout: 5000
+      connect-request-timeout: 8000
+      socket-timeout: 10000

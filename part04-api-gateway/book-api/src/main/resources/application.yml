@@ -4,3 +4,10 @@ spring:
 
 server:
   port: 9001
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9090/eureka/
+    registerWithEureka: true
+    fetchRegistry: true

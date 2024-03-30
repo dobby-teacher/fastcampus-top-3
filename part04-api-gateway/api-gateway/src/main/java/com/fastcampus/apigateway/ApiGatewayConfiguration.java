@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 public class ApiGatewayConfiguration {
     @Bean
     public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+        // http://localhost:8080/fastcampus/search/recommended
         return builder.routes()
                 .route(r -> r
                         .path("/fastcampus/**")

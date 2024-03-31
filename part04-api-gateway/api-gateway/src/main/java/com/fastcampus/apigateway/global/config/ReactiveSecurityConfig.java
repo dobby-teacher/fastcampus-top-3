@@ -1,32 +1,45 @@
 package com.fastcampus.apigateway.global.config;
 
+import com.fastcampus.apigateway.global.security.JwtReactiveAuthenticationManager;
+import com.fastcampus.apigateway.global.security.JwtReactiveSecurityContextRepository;
+import com.fastcampus.apigateway.global.security.JwtUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @Configuration
 @EnableWebFluxSecurity
 public class ReactiveSecurityConfig {
+    @Bean
+    public JwtReactiveAuthenticationManager authenticationManager(ReactiveUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
+        return new JwtReactiveAuthenticationManager(userDetailsService, passwordEncoder);
+    }
 
     @Bean
-    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http) {
+    public JwtReactiveSecurityContextRepository securityContextRepository(JwtUtil jwtUtil, ReactiveUserDetailsService userDetailsService) {
+        return new JwtReactiveSecurityContextRepository(jwtUtil, userDetailsService);
+    }
+
+    @Bean
+    public SecurityWebFilterChain securityWebFilterChain(ServerHttpSecurity http, JwtUtil jwtUtil, ReactiveUserDetailsService userDetailsService, PasswordEncoder passwordEncoder) {
         http
+                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .authorizeExchange(exchanges ->
                         exchanges
                                 .pathMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                                .pathMatchers("/login").permitAll()
                                 .anyExchange().authenticated()
                 )
-                .httpBasic(withDefaults()); // 기본 HTTP 인증 사용
+                .authenticationManager(authenticationManager(userDetailsService, passwordEncoder))
+                .securityContextRepository(securityContextRepository(jwtUtil, userDetailsService));
         return http.build();
     }
 

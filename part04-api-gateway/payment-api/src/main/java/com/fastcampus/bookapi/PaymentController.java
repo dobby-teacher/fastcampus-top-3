@@ -1,4 +1,4 @@
-package com.fastcampus.paymentapi;
+package com.fastcampus.bookapi;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

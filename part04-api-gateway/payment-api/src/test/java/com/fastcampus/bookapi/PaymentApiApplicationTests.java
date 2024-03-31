@@ -1,10 +1,10 @@
-package com.fastcampus.paymentapi;
+package com.fastcampus.bookapi;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class BookApiApplicationTests {
+class PaymentApiApplicationTests {
 
 	@Test
 	void contextLoads() {

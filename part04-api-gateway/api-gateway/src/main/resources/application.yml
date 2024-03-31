@@ -17,7 +17,16 @@ spring:
           predicates:
             - Path=/books/**
           filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 1 # replenishRate는 사용자가 일정 시간 동안(보통 초 단위) 발생시킬 수 있는 요청의 수를 정의
+                redis-rate-limiter.burstCapacity: 1 # burstCapacity는 토큰 버킷이 담을 수 있는 최대 토큰의 수를 정의
+                key-resolver: "#{@ipKeyResolver}"
             - RewritePath=/books/(?<segment>.*),/v1/books/$\{segment}
+  data:
+    redis:
+      port: 6379
+      host: 127.0.0.1
 
 eureka:
   client:
@@ -33,3 +42,11 @@ eureka:
 
 jwt:
   secret: 1ad35d74dc65cc0ee9a3a409f7f87e332aa6aa89d9cc64c66cdf9a1ffdc534ee
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+    reactor.netty: DEBUG

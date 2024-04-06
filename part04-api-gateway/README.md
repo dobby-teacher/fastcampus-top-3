@@ -68,12 +68,14 @@
 - 6.2. 로깅 데이터 수집
 - 6.3. Zipkin 서버를 이용한 추적 데이터 시각화
 
-#### 7. Prometheus와 Grafana 연동 및 간단한 대시보드 구축
+#### 7. Prometheus 연동 하기
 - 7.1. Prometheus 설정 및 메트릭 수집
     - 7.1.1. Spring Boot 애플리케이션에 Prometheus 메트릭스 익스포트
     - 7.1.2. Prometheus 서버 구성 및 실행
-- 7.2. Grafana 설정 및 대시보드 구축
-    - 7.2.1. Grafana 설치 및 설정
-    - 7.2.2. Prometheus 데이터 소스 연동
-    - 7.2.3. 간단한 대시보드 생성 및 커스터마이징
+
+#### 8. Grafana 연동 및 간단한 대시보드 구축
+- 8.1. Grafana 설정 및 대시보드 구축
+    - 8.1.1. Grafana 설치 및 설정
+    - 8.1.2. Prometheus 데이터 소스 연동
+    - 8.1.3. 간단한 대시보드 생성 및 커스터마이징
 

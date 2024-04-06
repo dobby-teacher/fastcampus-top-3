@@ -37,7 +37,12 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt:0.12.5'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
+
+	// springboot 3 부터 deprecated
+	// implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
 }
 
 dependencyManagement {

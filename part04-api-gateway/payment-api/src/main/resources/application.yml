@@ -11,3 +11,14 @@ eureka:
       defaultZone: http://localhost:9090/eureka/
     registerWithEureka: true
     fetchRegistry: true
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: b3
+      produce: b3_multi
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"

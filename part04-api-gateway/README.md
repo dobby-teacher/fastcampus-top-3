@@ -10,12 +10,12 @@
 - 'org.springframework.boot:spring-boot-starter-webflux'
 - 'org.springframework.boot:spring-boot-starter-test'
 - 'org.springframework.boot:spring-boot-starter-security'
-- 'org.springframework.boot:spring-boot-starter-data-redis'
+- 'org.springframework.boot:spring-boot-starter-data-redis-reactive'
 - 'org.springframework.cloud:spring-cloud-starter-gateway'
 - 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 - 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
-- 'org.springframework.cloud:spring-cloud-starter-sleuth'
-- 'org.springframework.cloud:spring-cloud-sleuth-zipkin'
+- ~~'org.springframework.cloud:spring-cloud-starter-sleuth'~~ io.micrometer:micrometer-tracing-bridge-brave
+- ~~'org.springframework.cloud:spring-cloud-sleuth-zipkin'~~ 'io.zipkin.reporter2:zipkin-reporter-brave'
 - 'io.micrometer:micrometer-registry-prometheus'
 - 'org.projectlombok:lombok'
 
@@ -25,7 +25,7 @@
 - Spring Security를 활용한 인증 및 인가 구현
 - Spring Cloud Gateway를 사용한 Rate Limiting 구현
 - Spring Cloud Gateway를 활용한 BFF(Backend For Frontend) 분리
-- Spring Cloud Sleuth 및 Zipkin을 사용한 분산 로깅 구현
+- Zipkin을 사용한 분산 로깅 구현
 - Prometheus와 Grafana 연동 및 간단한 대시보드 구축
 
 
@@ -63,7 +63,7 @@
     - 5.2.2. 모바일 앱을 위한 필터 적용 (Compression 필터 등)
     - 5.2.3. 웹을 위한 필터 구현 (Cors 필터 등)
 
-#### 6. Spring Cloud Sleuth 및 Zipkin을 사용한 분산 로깅 구현
+#### 6. Zipkin을 사용한 분산 로깅 구현
 - 6.1. Sleuth와 Zipkin의 기본 설정
 - 6.2. 로깅 데이터 수집
 - 6.3. Zipkin 서버를 이용한 추적 데이터 시각화

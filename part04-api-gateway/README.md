@@ -58,7 +58,10 @@
 
 #### 5. Spring Cloud Gateway를 활용한 BFF(Backend For Frontend) 분리
 - 5.1. BFF를 위한 Gateway 라우트 설정
-- 5.2. 프론트엔드 및 백엔드 서비스와의 통합
+- 5.2. BFF를 위한 여러가지 필터 만들어서 적용하기
+    - 5.2.1. 공통 필터 구현 및 적용 (Logging 등)
+    - 5.2.2. 모바일 앱을 위한 필터 적용 (Compression 필터 등)
+    - 5.2.3. 웹을 위한 필터 구현 (Cors 필터 등)
 
 #### 6. Spring Cloud Sleuth 및 Zipkin을 사용한 분산 로깅 구현
 - 6.1. Sleuth와 Zipkin의 기본 설정

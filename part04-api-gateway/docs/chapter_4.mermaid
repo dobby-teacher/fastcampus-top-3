@@ -1,0 +1,24 @@
+graph LR;
+    subgraph "Service Discovery"
+        sd((Discovery Service))
+    end
+    subgraph "API Gateway"
+        gw((Router))
+        rl((Rate Limiter))
+        sec((Spring Security))
+    end
+    subgraph "book-api"
+        book["Book API"]
+    end
+    subgraph "payment-api"
+        payment["Payment API"]
+    end
+
+    sd --> book
+    sd --> payment
+    gw --> sec
+    gw --> rl
+    gw --> sd
+    rl --> sec
+    sec --> book
+    sec --> payment

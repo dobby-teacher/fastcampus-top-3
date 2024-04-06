@@ -36,7 +36,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:9090/eureka/
+      defaultZone: http://localhost:8000/eureka/
     registerWithEureka: true
     fetchRegistry: true
 
@@ -58,6 +58,17 @@ management:
   zipkin:
     tracing:
       endpoint: "http://localhost:9411/api/v2/spans"
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - loggers
+          - mappings
+          - metrics
+          - shutdown
+          - prometheus
 
 logging:
   pattern:
@@ -69,7 +80,7 @@ logging:
     reactor.ipc.netty: DEBUG
     reactor.netty: DEBUG
 server:
-  port: 8080
+  port: 8001
   compression:
     enabled: true
 
@@ -119,7 +130,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:9090/eureka/
+      defaultZone: http://localhost:8000/eureka/
     registerWithEureka: true
     fetchRegistry: true
 
@@ -141,6 +152,17 @@ management:
   zipkin:
     tracing:
       endpoint: "http://localhost:9411/api/v2/spans"
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - loggers
+          - mappings
+          - metrics
+          - shutdown
+          - prometheus
 
 logging:
   pattern:
@@ -153,4 +175,4 @@ logging:
     reactor.netty: DEBUG
 
 server:
-  port: 8081
+  port: 8002

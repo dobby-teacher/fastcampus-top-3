@@ -36,6 +36,7 @@ public class ReactiveSecurityConfig {
                         exchanges
                                 .pathMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                                 .pathMatchers("/login").permitAll()
+                                .pathMatchers("/actuator/**").permitAll()
                                 .anyExchange().authenticated()
                 )
                 .authenticationManager(authenticationManager(userDetailsService, passwordEncoder))

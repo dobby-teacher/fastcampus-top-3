@@ -1,8 +1,18 @@
 spring:
+  config:
+    activate:
+      on-profile: mobile
   application:
-    name: api-gateway
+    name: api-gateway-mobile
   cloud:
     gateway:
+      default-filters:
+        - name: LoggingFilter
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 1 # replenishRate는 사용자가 일정 시간 동안(보통 초 단위) 발생시킬 수 있는 요청의 수를 정의
+            redis-rate-limiter.burstCapacity: 5 # burstCapacity는 토큰 버킷이 담을 수 있는 최대 토큰의 수를 정의
+            key-resolver: "#{@ipKeyResolver}"
       routes:
         - id: payment-api
           uri: lb://payment-api
@@ -17,11 +27,6 @@ spring:
           predicates:
             - Path=/books/**
           filters:
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 1 # replenishRate는 사용자가 일정 시간 동안(보통 초 단위) 발생시킬 수 있는 요청의 수를 정의
-                redis-rate-limiter.burstCapacity: 1 # burstCapacity는 토큰 버킷이 담을 수 있는 최대 토큰의 수를 정의
-                key-resolver: "#{@ipKeyResolver}"
             - RewritePath=/books/(?<segment>.*),/v1/books/$\{segment}
   data:
     redis:
@@ -50,3 +55,75 @@ logging:
     org.springframework.web.reactive: DEBUG
     reactor.ipc.netty: DEBUG
     reactor.netty: DEBUG
+server:
+  port: 8080
+  compression:
+    enabled: true
+
+---
+spring:
+  config:
+    activate:
+      on-profile: web
+  application:
+    name: api-gateway-web
+  cloud:
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]': # 모든 라우트에 대해 적용
+            allowedOrigins: "https://example.com" # 허용할 오리진
+            allowedMethods: # 허용할 HTTP 메소드
+              - GET
+              - POST
+            allowedHeaders: # 허용할 헤더
+              - Content-Type
+              - Authorization
+            allowCredentials: true # 인증 허용 여부
+            maxAge: 3600 # pre-flight 요청의 캐시 시간(초)
+      default-filters:
+        - name: LoggingFilter
+      routes:
+        - id: payment-api
+          uri: lb://payment-api
+          order: 1
+          predicates:
+            - Path=/payments/** # 특정 경로로 오는 요청을 처리
+          filters:
+            - RewritePath=/payments/(?<segment>.*),/v1/payments/$\{segment}
+        - id: book-api
+          uri: lb://book-api
+          order: 1
+          predicates:
+            - Path=/books/**
+          filters:
+            - RewritePath=/books/(?<segment>.*),/v1/books/$\{segment}
+  data:
+    redis:
+      port: 6379
+      host: 127.0.0.1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9090/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+
+    rest-template-timeout:
+      connect-timeout: 5000
+      connect-request-timeout: 8000
+      socket-timeout: 10000
+
+jwt:
+  secret: 1ad35d74dc65cc0ee9a3a409f7f87e332aa6aa89d9cc64c66cdf9a1ffdc534ee
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+    reactor.netty: DEBUG
+server:
+  port: 8081

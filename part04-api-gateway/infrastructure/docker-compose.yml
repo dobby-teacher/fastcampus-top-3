@@ -99,6 +99,23 @@ services:
       - back-tier
     labels:
       org.label-schema.group: "monitoring"
+  grafana:
+    image: grafana/grafana
+    user: "472"
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./grafana/config.monitoring
+    networks:
+      - back-tier
+      - front-tier
+    restart: always
 volumes:
   redis-data:
   prometheus_data: { }
+  grafana_data: { }

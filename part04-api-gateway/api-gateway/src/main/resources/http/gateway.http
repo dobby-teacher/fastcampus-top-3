@@ -1,5 +1,5 @@
 ### 로그인
-POST http://localhost:8080/login
+POST http://localhost:8001/login
 Content-Type: application/json
 
 {
@@ -10,5 +10,5 @@ Content-Type: application/json
 > {% client.global.set("authToken", response.body.token); %}
 
 ### 책 정보 조회
-GET http://localhost:8080/books/3
+GET http://localhost:8001/books/3
 Authorization: Bearer {{authToken}}

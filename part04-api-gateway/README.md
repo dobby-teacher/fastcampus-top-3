@@ -5,6 +5,7 @@
 - IntelliJ IDEA 2023
 - Git
 - OpenJDK 17
+- Docker, Docker Compose (Redis, Prometheus, Grafana)
 
 ### 실습 Spring + API Gateway 관련 스택
 - 'org.springframework.boot:spring-boot-starter-webflux'

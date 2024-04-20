@@ -1,5 +1,7 @@
 # MSA 환경에서 REST API, gRPC, GraphQL로 마스터하는 백엔드 API 개발
 ## NextCampus 프로젝트
+![image](https://github.com/dobby-teacher/fastcampus-top-6/assets/154607598/1bc9d24d-5209-47f3-a1b7-06fec20e5693)
+
 ### 개발 환경
 - OS
   - Mac Sonoma 14
@@ -92,4 +94,29 @@
   - 서비스간 데이터 통신 및 Aggregation 구현
   - 에러 핸들링 및 보안 기능 개발
   - 성능 최적화 전략 적용 및 평가
+
+### Chapter 7. API Gateway 설계 및 서비스 구축
+- API Gateway 라우팅 설정 및 테스트
+- API Gateway와 JWT 인증 서버와 연동
+- API Gateway의 부하 분산 및 서킷 브레이커 설정
+- API Gateway 캐싱 설정 및 성능 최적화 기법
+
+### Chapter 8. 로깅 및 모니터링 기능 추가
+- 로깅 및 모니터링 도구 및 라이브러리 도입 및 설정
+- 모니터링 대시보드 구축 및 사용
+
+### Chapter 9. **Docker 이미지 빌드 및 Docker Compose로 배포하기**
+- Docker 이미지 빌드 및 컨테이너 배포 설정
+
+### Chapter 10. **K8S Chart로 어플리케이션 배포하기**
+- Kubernetes 클러스터 설정 및 Helm Chart 작성
+
+### Chapter 11. **API 문서화**
+- API 문서화 도구 도입 및 API 문서 작성
+
+### Chapter 12. **웹 클라이언트 구축**
+- 간단한 UI 연동 개발 및 테스트
+
+### Chapter 13. **프로젝트 완성 및 리뷰**
+- 전체 프로젝트 검토
 

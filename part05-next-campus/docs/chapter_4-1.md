@@ -52,7 +52,7 @@
     - 특정 강의에 대한 모든 평가를 조회합니다.
 
 ### 데이터베이스 구조
-- DB명 : next_courses
+- DB명 : next_course
 - Database per Service 패턴 적용
 - 강의 관련 테이블만 DB 및 테이블 생성
   - courses

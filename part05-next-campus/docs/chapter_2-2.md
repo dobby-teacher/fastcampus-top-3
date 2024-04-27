@@ -1,4 +1,4 @@
-![image](https://github.com/dobby-teacher/fastcampus-top-6/assets/154607598/1bc9d24d-5209-47f3-a1b7-06fec20e5693)
+![image](./chapter_2-1.png)
 
 ## 1. 서비스 간 통신 방법
 - 통신 방법

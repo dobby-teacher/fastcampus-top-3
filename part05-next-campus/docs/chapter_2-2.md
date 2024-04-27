@@ -1,129 +1,41 @@
-### 1. 사용자 관리 서비스 (User Management Service)
-**테이블:** `USERS`
+![image](https://github.com/dobby-teacher/fastcampus-top-6/assets/154607598/1bc9d24d-5209-47f3-a1b7-06fec20e5693)
+
+## 1. 서비스 간 통신 방법
+- 통신 방법
+  - 서비스 간 통신 방법으로 RESTful API, gRPC 사용
+  - 이번 프로젝트에서는 **Event-Driven Architecture**는 도입하지 않고 전체 적인 GraphQL, gRPC, RESTful API 의 통신 방법 위주로 개발 예정  
+- API Gateway 역할
+  - 모든 API 진입점, 로그인/JWT 인증을 담당
+  - Public API/Internal API 관리
+    - 외부(External) API : Authentication, GraphQL, File Serving Service
+    - 로그인과 파일 재생을 제외한 모든 통신은 GraphQL을 통해서 이루어 짐
+- 모니터링 및 보안
+  - Prometheus 로 각 컴포넌트의 Metrics 수집, Grafana 대시보드를 통해 컴포넌트 Metrics 시각화
+  - Zipkin을 통해 각 컴포넌트의 트랜잭션 데이터 수집 후 ElasticSearch에 저장
+  - Kibana를 통해서 요청 데이터 시각화
+
+## 2. Database per Service 패턴
+- https://microservices.io/patterns/data/database-per-service.html
+- 컴포넌트 DB는 MySQL사용, 논리 DB로 분리 사용
+- **논리적 데이터베이스 분리**: 각 서비스가 독립적으로 관리하는 데이터베이스는 물리적으로는 같은 데이터베이스 클러스터 내에 존재할 수 있지만, 논리적으로는 완전히 분리
+- **데이터베이스 선택**: 각 서비스의 특성에 맞는 데이터베이스를 선택 필요하지만, 이번 프로젝트에서는 MySQL을 메인 DB로 사용할 예정
+
+## 3. 각 서비스 컴포넌트 정의
+### GraphQL 서비스
+- 여러 컴포넌트의 데이터를 Aggregation 하는 역할
+
+### 사용자 관리 서비스 (User Management Service)
 - 사용자 인증 및 프로필 관리
 
-```sql
--- Users Table
-CREATE TABLE USERS
-(
-    user_id       INT AUTO_INCREMENT PRIMARY KEY,
-    username      VARCHAR(255) NOT NULL,
-    email         VARCHAR(255) UNIQUE NOT NULL,
-    password_hash CHAR(60) NOT NULL,
-    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
-    last_login    DATETIME
-);
-```
-
-### 2. 강의 관리 서비스 (Course Management Service)
-**테이블:** `COURSES`, `COURSE_SESSIONS`, `COURSE_RATINGS`
+### 강의 관리 서비스 (Course Management Service)
 - 강의 및 세션 정보 관리
 - 강의 평가 관리
 
-```sql
--- Courses Table
-CREATE TABLE COURSES
-(
-    course_id     INT AUTO_INCREMENT PRIMARY KEY,
-    title         VARCHAR(255) NOT NULL,
-    description   TEXT,
-    instructor_id INT NOT NULL,
-    created_at    DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (instructor_id) REFERENCES USERS (user_id)
-);
+### 강의 등록/권한 서비스 (Enrollment Service)
+- 사용자가 구매한 강의, 이용권 권한 정보 관리
 
--- Course Sessions Table
-CREATE TABLE COURSE_SESSIONS
-(
-    session_id INT AUTO_INCREMENT PRIMARY KEY,
-    course_id  INT NOT NULL,
-    title      VARCHAR(255) NOT NULL,
-    video_url  VARCHAR(255) NOT NULL,
-    duration   INT NOT NULL,
-    FOREIGN KEY (course_id) REFERENCES COURSES (course_id)
-);
-
--- Course_Ratings Table
-CREATE TABLE COURSE_RATINGS
-(
-    rating_id  INT AUTO_INCREMENT PRIMARY KEY,
-    course_id  INT NOT NULL,
-    user_id    INT NOT NULL,
-    rating     TINYINT NOT NULL,
-    comment    TEXT,
-    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (course_id) REFERENCES COURSES (course_id),
-    FOREIGN KEY (user_id) REFERENCES USERS (user_id)
-);
-```
-
-### 3. 강의 등록/권한 서비스 (Enrollment Service)
-**테이블:** `ENROLLMENTS`, `ACCESS_TICKETS`
-- 사용자의 권한 정보 관리
-
-```sql
--- Enrollments Table
-CREATE TABLE ENROLLMENTS
-(
-    enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id       INT NOT NULL,
-    course_id     INT NOT NULL,
-    enroll_date   DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES USERS (user_id),
-    FOREIGN KEY (course_id) REFERENCES COURSES (course_id)
-);
-
--- Access_Tickets Table
-CREATE TABLE ACCESS_TICKETS
-(
-  ticket_id       INT AUTO_INCREMENT PRIMARY KEY,
-  user_id         INT NOT NULL,
-  purchase_date   DATETIME DEFAULT CURRENT_TIMESTAMP,
-  expiration_date DATETIME NOT NULL,
-  FOREIGN KEY (user_id) REFERENCES USERS (user_id)
-);
-```
-
-### 4. 컨텐츠 파일 관리 서비스 (Content File Management Service)
-**테이블:** `CONTENT_FILES`
+### 컨텐츠 파일 관리 서비스 (Content File Management Service)
 - 강의 컨텐츠 파일 관리
 
-```sql
--- Content_Files Table
-CREATE TABLE CONTENT_FILES
-(
-    file_id    INT AUTO_INCREMENT PRIMARY KEY,
-    session_id INT NOT NULL,
-    file_path  VARCHAR(255) NOT NULL,
-    file_type  VARCHAR(50) NOT NULL,
-    FOREIGN KEY (session_id) REFERENCES SESSIONS (session_id)
-);
-```
-
-### 5. 재생 서비스 (Playback Service)
-**테이블:** `PLAYBACK_SESSIONS`, `PLAYBACK_EVENTS`
+### 재생 서비스 (Playback Service)
 - 사용자의 강의 재생 세션 및 이벤트 추적
-
-```sql
--- Playback Sessions Table
-CREATE TABLE PLAYBACK_SESSIONS
-(
-    playback_id   INT AUTO_INCREMENT PRIMARY KEY,
-    user_id       INT NOT NULL,
-    session_id    INT NOT NULL,
-    start_time    DATETIME,
-    end_time      DATETIME,
-    FOREIGN KEY (user_id) REFERENCES USERS (user_id),
-    FOREIGN KEY (session_id) REFERENCES SESSIONS (session_id)
-);
-
--- Playback Events Table
-CREATE TABLE PLAYBACK_EVENTS
-(
-    event_id      INT AUTO_INCREMENT PRIMARY KEY,
-    playback_id   INT NOT NULL,
-    event_type    VARCHAR(255) NOT NULL,
-    event_time    DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (playback_id) REFERENCES PLAYBACK_SESSIONS (playback_id)
-);
-```

@@ -1,0 +1,7 @@
+### next_user 데이터 베이스 생성
+```
+mysql -u root -p
+show databases;
+CREATE DATABASE next_user;
+GRANT ALL PRIVILEGES ON next_user.* TO 'fast'@'localhost';
+```

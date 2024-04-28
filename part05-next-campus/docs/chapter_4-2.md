@@ -1,4 +1,4 @@
-### 데이터 베이스 생성
+### next_course 데이터 베이스 생성
 ```
 mysql -u root -p
 show databases;

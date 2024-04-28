@@ -1,0 +1,49 @@
+### Create User 1
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "name": "Fast Campus",
+  "email": "fast.campus1@example.com",
+  "password": "campus"
+}
+
+### Create User 2
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "name": "Fast Campus",
+  "email": "fast.campus2@example.com",
+  "password": "campus"
+}
+
+> {% client.global.set("userId", response.body.id); %}
+
+### Get User by ID
+GET http://localhost:8080/users/{{userId}}
+
+> {% client.test("Request executed successfully", function() {
+    client.assert(response.status === 200, "Response status is not 200");
+}); %}
+
+### Update User
+PUT http://localhost:8080/users/{{userId}}
+Content-Type: application/json
+
+{
+  "name": "Fast Campus Updated",
+  "email": "fast.campus.updated@example.com"
+}
+
+### Get User Login Histories
+GET http://localhost:8080/users/{{userId}}/login-histories
+
+### Change Password
+POST http://localhost:8080/users/{{userId}}/password-change
+Content-Type: application/json
+
+{
+  "oldPassword": "campus",
+  "newPassword": "campus_new"
+}

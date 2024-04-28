@@ -1,0 +1,36 @@
+### Create User 1
+POST http://localhost:8080/users
+Content-Type: application/json
+
+{
+  "name": "Fast Campus 3",
+  "email": "fast.campus3@example.com",
+  "password": "campus"
+}
+
+### Generate Token
+POST http://localhost:8080/auth/token
+Content-Type: application/json
+
+{
+  "email": "fast.campus3@example.com",
+  "password": "campus"
+}
+
+> {% client.global.set("authToken", response.body.token); %}
+
+### Verify Token
+POST http://localhost:8080/auth/verify-token
+Content-Type: application/json
+
+{
+  "token": "{{authToken}}"
+}
+
+### Refresh Token
+POST http://localhost:8080/auth/refresh-token
+Content-Type: application/json
+
+{
+  "token": "{{authToken}}"
+}

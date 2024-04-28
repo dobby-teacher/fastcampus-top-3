@@ -27,3 +27,10 @@ spring:
   sql:
     init:
       data-locations: classpath:sql/data.sql
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8000/eureka/
+    registerWithEureka: true
+    fetchRegistry: true

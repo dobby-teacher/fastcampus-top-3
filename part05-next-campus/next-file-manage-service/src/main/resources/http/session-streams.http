@@ -1,0 +1,8 @@
+### Request Full Video File
+GET http://localhost:8080/sessions/1/streams
+Accept: */*
+
+### Request Partial Video File (Range Request)
+GET http://localhost:8080/sessions/1/streams
+Range: bytes=0-1023
+Accept: */*

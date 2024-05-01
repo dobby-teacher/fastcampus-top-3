@@ -1,0 +1,22 @@
+### Get All Files by Session ID
+GET http://localhost:8080/sessions/1/files
+Accept: application/json
+
+### Get File by ID
+GET http://localhost:8080/sessions/1/files/1
+Accept: application/json
+
+### Upload File
+POST http://localhost:8080/sessions/1/files
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="intro_to_python.mp4"
+Content-Type: application/octet-stream
+
+< intro_to_python.mp4
+--WebAppBoundary--
+
+### Delete File
+DELETE http://localhost:8080/sessions/1/files/100
+Accept: application/json

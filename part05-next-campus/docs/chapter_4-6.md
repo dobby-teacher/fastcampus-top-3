@@ -13,23 +13,15 @@
 
 #### **파일 목록 조회 (List Files)**
 - `GET /api/sessions/{sessionId}/files`
-  - 특정 세션에 속하는 모든 파일의 목록을 조회합니다.
+  - 특정 세션에 속하는 가장 최신 파일 한개를 조회합니다.
 - **Response**:
 ```json
-[
-  {
-    "fileId": 1,
-    "fileName": "session1_video.mp4",
-    "fileType": "mp4",
-    "filePath": "/files/session1/"
-  },
-  {
-    "fileId": 2,
-    "fileName": "session1_additional.mp4",
-    "fileType": "mp4",
-    "filePath": "/files/session1/"
-  }
-]
+{
+  "fileId": 1,
+  "fileName": "session1_video.mp4",
+  "fileType": "mp4",
+  "filePath": "/files/session1/"
+}
 ```
 
 3. **파일 상세 조회 (Get File Detail)**
@@ -46,24 +38,17 @@
 }
 ```
 
-#### **파일 수정 (Update File)**
-- `PUT /api/sessions/{sessionId}/files/{fileId}`
-  - 특정 세션의 특정 파일의 정보(파일 이름, 유형, 경로)를 수정합니다.
-- **Payload**:
-```json
-{
-  "fileName": "updated_session1_video.mp4",
-  "fileType": "mp4",
-  "filePath": "/files/session1/"
-}
-```
-
 #### **파일 삭제 (Delete File)**
 - `DELETE /api/sessions/{sessionId}/files/{fileId}`
   - 특정 세션의 특정 파일을 시스템에서 삭제합니다.
 
+#### **파일 스트리밍 (File Stream)**
+- `POST /api/sessions/{sessionId}/streams`
+  - 특정 세션에 등록된 파일을 재생합니다.
+  - Byte Range 형태의 재생도 지원합니다.
+
 ### 데이터베이스 구조
-- DB명 : next_session_files
+- DB명 : next_files
 - Database per Service 패턴 적용
 - 세션 파일 관련 테이블만 DB 및 테이블 생성
     - session_files

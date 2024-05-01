@@ -2,6 +2,10 @@
 ## NextCampus 프로젝트
 ![image](https://github.com/dobby-teacher/fastcampus-top-6/assets/154607598/1bc9d24d-5209-47f3-a1b7-06fec20e5693)
 
+### 사용한 영상의 출처
+- https://www.w3.org/html/wiki/Elements/video.html
+  - https://media.w3.org/2010/05/sintel/trailer.mp4
+
 ### 개발 환경
 - OS
   - Mac Sonoma 14

@@ -1,0 +1,34 @@
+sequenceDiagram
+    participant C as Client
+    participant S as PlaybackService
+    participant DB as Database
+
+%% StartRecord
+    C->>S: StartRecord(user_id, file_id)
+    alt is request valid?
+        S->>DB: Create record
+        DB-->>S: Record created
+        S-->>C: StartRecordResponse(playback record)
+    else is request invalid
+        S-->>C: Error (Invalid request)
+    end
+
+%% EndRecord
+    C->>S: EndRecord(session_id)
+    alt is session ID valid?
+        S->>DB: Update record (end time)
+        DB-->>S: Record updated
+        S-->>C: EndRecordResponse(playback record)
+    else is session ID invalid
+        S-->>C: Error (Record not found)
+    end
+
+%% LogEvent
+    C->>S: LogEvent(event data)
+    alt is event data valid?
+        S->>DB: Log event in database
+        DB-->>S: Event logged
+        S-->>C: LogEventResponse(event info)
+    else is event data invalid
+        S-->>C: Error (Invalid event data)
+    end

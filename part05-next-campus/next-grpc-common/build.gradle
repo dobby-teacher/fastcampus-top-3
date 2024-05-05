@@ -1,0 +1,74 @@
+buildscript {
+    ext {
+        protobufVersion = '3.25.1'
+        grpcVersion = '1.60.1'
+        protoc_platform = 'osx-x86_64'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'com.google.protobuf' version '0.9.4'
+}
+
+group = 'com.fastcampus'
+version = '0.0.1-SNAPSHOT'
+
+java {
+    sourceCompatibility = '17'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'javax.annotation:javax.annotation-api:1.3.2'
+    implementation "io.grpc:grpc-protobuf:${grpcVersion}"
+    implementation "io.grpc:grpc-stub:${grpcVersion}"
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+protobuf {
+    protobuf {
+        protoc {
+            if (project.hasProperty('protoc_platform')) {
+                artifact = "com.google.protobuf:protoc:${protobufVersion}:${protoc_platform}"
+            } else {
+                artifact = "com.google.protobuf:protoc:${protobufVersion}"
+            }
+        }
+        plugins {
+            grpc {
+                if (project.hasProperty('protoc_platform')) {
+                    artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}:${protoc_platform}"
+                } else {
+                    artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+                }
+            }
+        }
+    }
+    clean {
+        delete generatedFilesBaseDir
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:1.60.1"
+        }
+    }
+    generateProtoTasks {
+        all()*.plugins {
+            grpc {}
+        }
+    }
+}

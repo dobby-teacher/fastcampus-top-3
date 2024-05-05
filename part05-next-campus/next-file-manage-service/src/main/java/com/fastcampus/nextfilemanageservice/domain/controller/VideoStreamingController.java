@@ -1,10 +1,9 @@
 package com.fastcampus.nextfilemanageservice.domain.controller;
 
-import com.fastcampus.nextfilemanageservice.domain.files.SessionFile;
+import com.fastcampus.nextfilemanageservice.domain.entity.SessionFile;
 import com.fastcampus.nextfilemanageservice.domain.service.SessionFileService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;

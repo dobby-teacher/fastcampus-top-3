@@ -1,6 +1,6 @@
 package com.fastcampus.nextfilemanageservice.domain.service;
 
-import com.fastcampus.nextfilemanageservice.domain.files.SessionFile;
+import com.fastcampus.nextfilemanageservice.domain.entity.SessionFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

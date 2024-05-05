@@ -1,6 +1,6 @@
 package com.fastcampus.nextfilemanageservice.domain.repository;
 
-import com.fastcampus.nextfilemanageservice.domain.files.SessionFile;
+import com.fastcampus.nextfilemanageservice.domain.entity.SessionFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

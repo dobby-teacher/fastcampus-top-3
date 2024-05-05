@@ -11,6 +11,13 @@ service PlaybackService {
 
 - gRPC 모델 설계
 ```protobuf
+message PlaybackRecord {
+  string record_id = 1;  // 재생 기록 ID
+  string user_id = 2;    // 사용자 ID
+  string file_id = 3;    // 파일 ID
+  int64 start_time = 4;  // 시작 시간 (UNIX 타임스탬프)
+  int64 end_time = 5;    // 종료 시간 (UNIX 타임스탬프)
+}
 
 // 재생 기록 시작 요청 메시지
 message StartRecordRequest {

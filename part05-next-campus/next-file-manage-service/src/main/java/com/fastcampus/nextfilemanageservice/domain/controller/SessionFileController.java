@@ -1,15 +1,12 @@
 package com.fastcampus.nextfilemanageservice.domain.controller;
 
-import com.fastcampus.nextfilemanageservice.domain.files.SessionFile;
+import com.fastcampus.nextfilemanageservice.domain.entity.SessionFile;
 import com.fastcampus.nextfilemanageservice.domain.service.FileStorageService;
 import com.fastcampus.nextfilemanageservice.domain.service.SessionFileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/sessions/{sessionId}/files")

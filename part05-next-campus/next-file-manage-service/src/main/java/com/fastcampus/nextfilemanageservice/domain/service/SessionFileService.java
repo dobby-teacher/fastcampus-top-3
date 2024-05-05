@@ -1,11 +1,10 @@
 package com.fastcampus.nextfilemanageservice.domain.service;
 
-import com.fastcampus.nextfilemanageservice.domain.files.SessionFile;
+import com.fastcampus.nextfilemanageservice.domain.entity.SessionFile;
 import com.fastcampus.nextfilemanageservice.domain.repository.SessionFileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
+
 import java.util.Optional;
 
 @Service

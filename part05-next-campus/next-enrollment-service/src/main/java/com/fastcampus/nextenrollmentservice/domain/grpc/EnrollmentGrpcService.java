@@ -57,6 +57,7 @@ public class EnrollmentGrpcService extends EnrollmentServiceGrpc.EnrollmentServi
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (Exception e) {
+            log.error("manageSubscription error : ", e);
             responseObserver.onError(e);
         }
     }
@@ -80,6 +81,7 @@ public class EnrollmentGrpcService extends EnrollmentServiceGrpc.EnrollmentServi
             responseObserver.onNext(response);
             responseObserver.onCompleted();
         } catch (Exception e) {
+            log.error("renewSubscription error : ", e);
             responseObserver.onError(e);
         }
     }
@@ -96,7 +98,7 @@ public class EnrollmentGrpcService extends EnrollmentServiceGrpc.EnrollmentServi
 
     @Override
     public void checkSubscriptionAccess(EnrollmentServiceOuterClass.SubscriptionAccessRequest request, StreamObserver<EnrollmentServiceOuterClass.SubscriptionAccessResponse> responseObserver) {
-        boolean hasAccess = enrollmentService.checkSubscriptionAccess(request.getUserId());
+        boolean hasAccess = enrollmentService.checkSubscriptionAccess(request.getUserId(), LocalDateTime.now());
         EnrollmentServiceOuterClass.SubscriptionAccessResponse response = EnrollmentServiceOuterClass.SubscriptionAccessResponse.newBuilder()
                 .setHasAccess(hasAccess)
                 .build();

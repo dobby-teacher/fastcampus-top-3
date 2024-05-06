@@ -51,9 +51,8 @@ public class EnrollmentService {
         return enrollment.isPresent();
     }
 
-    public boolean checkSubscriptionAccess(long userId) {
-        LocalDateTime now = LocalDateTime.now();
+    public boolean checkSubscriptionAccess(long userId, LocalDateTime now) {
         Optional<Subscription> subscription = subscriptionRepository.findTopByUserIdAndEndDateAfterOrderByEndDateDesc(userId, now);
-        return subscription.isPresent() && !subscription.get().getEndDate().isBefore(LocalDateTime.now());
+        return subscription.isPresent() && !subscription.get().getEndDate().isBefore(now);
     }
 }

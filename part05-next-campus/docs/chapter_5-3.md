@@ -35,71 +35,72 @@ service FakePaymentService {
 ```protobuf
 // Requests and responses for the EnrollmentService
 message CourseRegistrationRequest {
-    int64 userId = 1;
-    int64 courseId = 2;
-    string registrationDate = 3; // Format: "YYYY-MM-DD"
+  int64 user_id = 1;
+  int64 course_id = 2;
+  int64 registration_date = 3; // Unix timestamp
 }
 
 message CourseRegistrationResponse {
-    int64 courseId = 1;
-    int64 userId = 2;
-    string registrationDate = 3;
+  int64 course_id = 1;
+  int64 user_id = 2;
+  int64 registration_date = 3; // Unix timestamp
 }
 
 message SubscriptionRequest {
-    int64 userId = 1;
-    string subscriptionId = 2;
-    string startDate = 3; // Format: "YYYY-MM-DD"
-    string endDate = 4; // Format: "YYYY-MM-DD"
+  int64 user_id = 1;
+  int64 subscription_id = 2;
+  int64 start_date = 3; // Unix timestamp
+  int64 end_date = 4; // Unix timestamp
 }
 
 message RenewSubscriptionRequest {
-    string subscriptionId = 1;
-    string startDate = 2; // Format: "YYYY-MM-DD"
-    string endDate = 3; // Format: "YYYY-MM-DD"
+  int64 subscription_id = 1;
+  int64 start_date = 2; // Unix timestamp
+  int64 end_date = 3; // Unix timestamp
 }
 
 message SubscriptionResponse {
-    string subscriptionId = 1;
-    int64 userId = 2;
-    string startDate = 3;
-    string endDate = 4;
+  int64 subscription_id = 1;
+  int64 user_id = 2;
+  int64 start_date = 3; // Unix timestamp
+  int64 end_date = 4; // Unix timestamp
 }
 
 message CourseAccessRequest {
-    int64 courseId = 1;
-    int64 userId = 2;
+  int64 course_id = 1;
+  int64 user_id = 2;
 }
 
 message CourseAccessResponse {
-    int64 courseId = 1;
-    bool hasAccess = 2;
+  int64 course_id = 1;
+  bool has_access = 2;
 }
 
 message SubscriptionAccessRequest {
-    string subscriptionId = 1;
-    int64 userId = 2;
+  int64 subscription_id = 1;
+  int64 user_id = 2;
 }
 
 message SubscriptionAccessResponse {
-    string subscriptionId = 1;
-    bool hasAccess = 2;
+  int64 subscription_id = 1;
+  bool has_access = 2;
 }
 
 // Requests and responses for the FakePaymentService
 message PaymentRequest {
-    int64 userId = 1;
-    string type = 2; // "COURSE" or "SUBSCRIPTION"
-    int64 itemId = 3;
-    double amount = 4;
-    string paymentMethod = 5; // E.g., "CARD"
+  int64 user_id = 1;
+  string type = 2; // "COURSE" or "SUBSCRIPTION"
+  int64 item_id = 3;
+  double amount = 4;
+  string payment_method = 5; // E.g., "CARD"
 }
 
 message PaymentResponse {
-    int64 userId = 1;
-    string type = 2;
-    int64 itemId = 3;
-    double amount = 4;
-    bool paymentSuccessful = 5;
+  int64 user_id = 1;
+  string type = 2;
+  int64 item_id = 3;
+  double amount = 4;
+  bool payment_successful = 5;
 }
+
 ```

@@ -3,7 +3,7 @@ CREATE TABLE payments
 (
     payment_id     INT AUTO_INCREMENT PRIMARY KEY,
     user_id        INT                                 NOT NULL,
-    payment_type   ENUM ('COURSE', 'SUBSCRIPTION')     NOT NULL, -- 결제 유형 구분
+    payment_type   VARCHAR(50)                         NOT NULL, -- 결제 유형 구분
     amount         DECIMAL(10, 2)                      NOT NULL,
     payment_method VARCHAR(50)                         NOT NULL,
     payment_date   TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -13,10 +13,10 @@ CREATE TABLE payments
 CREATE TABLE enrollments
 (
     enrollment_id     INT AUTO_INCREMENT PRIMARY KEY,
-    user_id           INT                                 NOT NULL,
-    course_id         INT                                 NOT NULL,
-    payment_id        INT                                 NOT NULL,
-    registration_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    user_id           INT       NOT NULL,
+    course_id         INT       NOT NULL,
+    payment_id        INT       NOT NULL,
+    registration_date TIMESTAMP NOT NULL,
     FOREIGN KEY (payment_id) REFERENCES payments (payment_id)
 );
 
@@ -24,9 +24,9 @@ CREATE TABLE enrollments
 CREATE TABLE subscriptions
 (
     subscription_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id         INT                                 NOT NULL,
-    payment_id      INT                                 NOT NULL,
-    start_date      TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    end_date        TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    user_id         INT       NOT NULL,
+    payment_id      INT       NOT NULL,
+    start_date      TIMESTAMP NOT NULL,
+    end_date        TIMESTAMP NOT NULL,
     FOREIGN KEY (payment_id) REFERENCES payments (payment_id)
 );

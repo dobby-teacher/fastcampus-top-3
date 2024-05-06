@@ -6,18 +6,20 @@ import com.fastcampus.nextplaybackservice.domain.repository.EventLogRepository;
 import com.fastcampus.nextplaybackservice.domain.repository.PlaybackRecordRepository;
 import io.grpc.stub.StreamObserver;
 import net.devh.boot.grpc.server.service.GrpcService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
 @GrpcService
 public class PlaybackService extends PlaybackServiceGrpc.PlaybackServiceImplBase {
 
-    @Autowired
-    private PlaybackRecordRepository playbackRecordRepository;
+    private final PlaybackRecordRepository playbackRecordRepository;
 
-    @Autowired
-    private EventLogRepository eventLogRepository;
+    private final EventLogRepository eventLogRepository;
+
+    public PlaybackService(EventLogRepository eventLogRepository, PlaybackRecordRepository playbackRecordRepository) {
+        this.eventLogRepository = eventLogRepository;
+        this.playbackRecordRepository = playbackRecordRepository;
+    }
 
     @Override
     public void startRecord(PlaybackServiceOuterClass.StartRecordRequest request, StreamObserver<PlaybackServiceOuterClass.StartRecordResponse> responseObserver) {

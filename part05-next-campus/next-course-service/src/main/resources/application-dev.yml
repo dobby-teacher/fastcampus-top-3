@@ -22,7 +22,7 @@ spring:
   sql:
     init:
       data-locations: classpath:sql/data.sql
-      schema-locations: classpath:sql/schema.sql
+      schema-locations: classpath:sql/schema-mysql.sql
       mode: never
 
 eureka:

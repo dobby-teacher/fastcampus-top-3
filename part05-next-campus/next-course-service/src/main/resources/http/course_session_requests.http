@@ -1,0 +1,21 @@
+### Add Session to Course
+POST http://localhost:8080/courses/1/sessions
+Content-Type: application/json
+
+{
+  "title": "Introduction to Java"
+}
+
+### Update Session
+PUT http://localhost:8080/courses/1/sessions/1
+Content-Type: application/json
+
+{
+  "title": "Advanced Java"
+}
+
+### Get Session by ID
+GET http://localhost:8080/courses/1/sessions/1
+
+### Get All Sessions by Course ID
+GET http://localhost:8080/courses/1/sessions

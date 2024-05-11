@@ -1,0 +1,25 @@
+### Add Rating to Course
+POST http://localhost:8080/courses/1/ratings
+Content-Type: application/json
+
+{
+  "rating": 5,
+  "comment": "Excellent course!",
+  "userId": 1
+}
+
+### Update Rating
+PUT http://localhost:8080/courses/1/ratings/1
+Content-Type: application/json
+
+{
+  "rating": 4,
+  "comment": "Very good course, but a bit hard.",
+  "userId": 1
+}
+
+### Delete Rating
+DELETE http://localhost:8080/courses/1/ratings/1
+
+### Get All Ratings for a Course
+GET http://localhost:8080/courses/1/ratings

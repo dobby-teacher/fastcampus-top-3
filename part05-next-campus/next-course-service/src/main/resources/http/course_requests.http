@@ -1,0 +1,27 @@
+### Create Course
+POST http://localhost:8080/courses
+Content-Type: application/json
+
+{
+  "title": "Introduction to Java",
+  "description": "A comprehensive course on Java programming",
+  "instructorId": 1,
+  "createdAt": "2024-05-10T15:00:00Z"
+}
+
+### Update Course
+PUT http://localhost:8080/courses/1
+Content-Type: application/json
+
+{
+  "title": "Advanced Java Concepts",
+  "description": "Deep dive into advanced Java topics",
+  "instructorId": 1,
+  "createdAt": "2024-05-10T15:00:00Z"
+}
+
+### Get Course by ID
+GET http://localhost:8080/courses/1
+
+### Get All Courses
+GET http://localhost:8080/courses

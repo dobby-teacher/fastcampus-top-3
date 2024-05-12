@@ -2,7 +2,10 @@ package com.fastcampus.nextuserservice.domain.user.controller;
 
 import com.fastcampus.nextuserservice.domain.user.dto.AuthRequest;
 import com.fastcampus.nextuserservice.domain.user.dto.TokenRequest;
+import com.fastcampus.nextuserservice.domain.user.entity.User;
 import com.fastcampus.nextuserservice.domain.user.service.JWTService;
+import com.fastcampus.nextuserservice.domain.user.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
@@ -13,14 +16,20 @@ import java.util.Map;
 public class AuthController {
 
     private final JWTService jwtService;
+    private final UserService userService;
 
-    public AuthController(JWTService jwtService) {
+    public AuthController(JWTService jwtService, UserService userService) {
         this.jwtService = jwtService;
+        this.userService = userService;
     }
 
     @PostMapping("/token")
-    public ResponseEntity<Map<String, String>> generateToken(@RequestBody AuthRequest authRequest) {
-        String token = jwtService.generateToken(authRequest.getEmail(), authRequest.getPassword());
+    public ResponseEntity<Map<String, String>> generateToken(HttpServletRequest request, @RequestBody AuthRequest authRequest) {
+        User existingUser = userService.getUserByEmail(authRequest.getEmail()).orElseThrow();
+        String token = jwtService.generateToken(existingUser, authRequest.getPassword());
+        String ipAddress = request.getRemoteAddr();
+
+        userService.logUserLogin(existingUser, ipAddress);
         return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
 

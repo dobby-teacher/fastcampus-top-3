@@ -1,8 +1,11 @@
 package com.fastcampus.nextuserservice.domain.user.service;
 
 import com.fastcampus.nextuserservice.domain.user.entity.User;
+import com.fastcampus.nextuserservice.domain.user.entity.UserLoginHistory;
+import com.fastcampus.nextuserservice.domain.user.repository.UserLoginHistoryRepository;
 import com.fastcampus.nextuserservice.domain.user.repository.UserRepository;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,28 +17,26 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Service
+@Slf4j
 public class JWTService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public String generateToken(String email, String password) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("No user found with this email address"));
+    public JWTService(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
-        if (!passwordEncoder.matches(password, user.getPasswordHash())) {
+    public String generateToken(User existingUser, String requestPassword) {
+        if (!passwordEncoder.matches(requestPassword, existingUser.getPasswordHash())) {
             throw new IllegalArgumentException("Invalid credentials");
         }
 
         long currentTimeMillis = System.currentTimeMillis();
         return Jwts.builder()
-                .subject(email)
+                .subject(existingUser.getEmail())
                 .issuedAt(new Date(currentTimeMillis))
                 .expiration(new Date(currentTimeMillis + 3600000)) // Token expires in 1 hour
                 .signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
@@ -47,6 +48,7 @@ public class JWTService {
             parseJwtClaims(token);
             return true;
         } catch (Exception e) {
+            log.error("validateToken error : ", e);
             return false;
         }
     }

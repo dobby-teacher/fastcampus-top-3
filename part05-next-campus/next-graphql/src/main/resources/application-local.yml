@@ -1,6 +1,14 @@
 spring:
   application:
     name: next-graphql
+  graphql:
+    path: /graphql
+    graphiql:
+      enabled: true
+      path: /graphiql
+    schema:
+      inspection:
+        enabled: true
 
 eureka:
   client:

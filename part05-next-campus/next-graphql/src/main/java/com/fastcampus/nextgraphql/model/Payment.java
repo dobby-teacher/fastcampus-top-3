@@ -9,8 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Payment {
     private Long id;
+    private Long userId;
     private User user;
-    private String paymentType; // This can be an enum if defined elsewhere
+    private String paymentType;
     private Float amount;
     private String paymentMethod;
     private String paymentDate;

@@ -25,6 +25,31 @@ public class DummyCourseService {
 
     public DummyCourseService(DummyFileService fileService) {
         this.fileService = fileService;
+        initData();
+    }
+
+    private void initData() {
+        // Adding dummy courses
+        courses.add(new Course(courseCounter.incrementAndGet(), "Introduction to GraphQL", "Learn the basics of GraphQL", 101L, new ArrayList<>(), new ArrayList<>()));
+        courses.add(new Course(courseCounter.incrementAndGet(), "Advanced GraphQL", "Deep dive into GraphQL", 102L, new ArrayList<>(), new ArrayList<>()));
+
+        // Adding dummy sessions
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 1L, "Session 1: Basics", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 1L, "Session 2: Queries", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 2L, "Session 1: Performance", new ArrayList<>()));
+
+        // Linking sessions to courses
+        courses.get(0).getCourseSessions().add(sessions.get(0));
+        courses.get(0).getCourseSessions().add(sessions.get(1));
+        courses.get(1).getCourseSessions().add(sessions.get(2));
+
+        // Adding dummy ratings
+        ratings.add(new CourseRating(ratingCounter.incrementAndGet(), 1L, 201L, 5, "Excellent course!"));
+        ratings.add(new CourseRating(ratingCounter.incrementAndGet(), 1L, 202L, 4, "Very informative."));
+
+        // Linking ratings to courses
+        courses.get(0).getRatings().add(ratings.get(0));
+        courses.get(0).getRatings().add(ratings.get(1));
     }
 
     public List<Course> findAllCourses() {

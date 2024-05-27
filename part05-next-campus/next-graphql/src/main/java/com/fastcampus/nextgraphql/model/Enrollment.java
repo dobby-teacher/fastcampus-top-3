@@ -9,8 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Enrollment {
     private Long id;
+    private Long userId;
     private User user;
+    private Long courseId;
     private Course course;
+    private Long paymentId;
     private Payment payment;
     private String registrationDate;
 }

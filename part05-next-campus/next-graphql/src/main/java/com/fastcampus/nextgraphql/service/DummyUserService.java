@@ -11,7 +11,17 @@ import java.util.concurrent.atomic.AtomicLong;
 @Service
 public class DummyUserService {
     private final List<User> users = new ArrayList<>();
-    private final AtomicLong counter = new AtomicLong();
+    private final AtomicLong counter = new AtomicLong(100);
+
+    public DummyUserService() {
+        initData();
+    }
+    private void initData() {
+        // Adding dummy users
+        users.add(new User(counter.incrementAndGet(), "John Doe", "john.doe@example.com", "password123"));
+        users.add(new User(counter.incrementAndGet(), "Jane Smith", "jane.smith@example.com", "password456"));
+        users.add(new User(counter.incrementAndGet(), "Alice Johnson", "alice.johnson@example.com", "password789"));
+    }
 
     public List<User> findAll() {
         return new ArrayList<>(users);

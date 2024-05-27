@@ -4,6 +4,7 @@ import com.fastcampus.nextgraphql.model.Enrollment;
 import com.fastcampus.nextgraphql.model.Payment;
 import com.fastcampus.nextgraphql.model.PlanSubscription;
 import com.fastcampus.nextgraphql.service.DummyEnrollmentService;
+import com.fastcampus.nextgraphql.service.DummyPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,10 +16,12 @@ import java.util.List;
 @Controller
 public class EnrollmentController {
     private final DummyEnrollmentService enrollmentService;
+    private final DummyPaymentService paymentService;
 
     @Autowired
-    public EnrollmentController(DummyEnrollmentService enrollmentService) {
+    public EnrollmentController(DummyEnrollmentService enrollmentService, DummyPaymentService paymentService) {
         this.enrollmentService = enrollmentService;
+        this.paymentService = paymentService;
     }
 
     @QueryMapping
@@ -33,6 +36,6 @@ public class EnrollmentController {
 
     @MutationMapping
     public Payment createPayment(@Argument Long userId, @Argument Float amount, @Argument String paymentType, @Argument String paymentMethod) {
-        return enrollmentService.createPayment(userId, amount, paymentType, paymentMethod);
+        return paymentService.createPayment(userId, amount, paymentType, paymentMethod);
     }
 }

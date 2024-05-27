@@ -17,6 +17,23 @@ public class DummyPlaybackService {
     private final AtomicLong recordCounter = new AtomicLong();
     private final AtomicLong eventCounter = new AtomicLong();
 
+    public DummyPlaybackService() {
+        initData();  // Initialize with dummy data
+    }
+
+    private void initData() {
+        // Adding some dummy playback records
+        PlaybackRecord record1 = new PlaybackRecord(recordCounter.incrementAndGet(), 1L, 101L, "2024-01-01T10:00:00Z", "2024-01-01T11:00:00Z");
+        PlaybackRecord record2 = new PlaybackRecord(recordCounter.incrementAndGet(), 2L, 102L, "2024-01-02T10:00:00Z", "2024-01-02T11:00:00Z");
+        records.add(record1);
+        records.add(record2);
+
+        // Adding some dummy event logs
+        eventLogs.add(new EventLog(eventCounter.incrementAndGet(), record1.getRecordId(), 1L, "play", "2024-01-01T10:00:00Z"));
+        eventLogs.add(new EventLog(eventCounter.incrementAndGet(), record1.getRecordId(), 1L, "pause", "2024-01-01T10:30:00Z"));
+        eventLogs.add(new EventLog(eventCounter.incrementAndGet(), record2.getRecordId(), 2L, "play", "2024-01-02T10:00:00Z"));
+    }
+
     public List<PlaybackRecord> findAll() {
         return new ArrayList<>(records);
     }
@@ -37,6 +54,8 @@ public class DummyPlaybackService {
 
     public void delete(Long recordId) {
         records.removeIf(record -> record.getRecordId().equals(recordId));
+        // Also remove associated event logs
+        eventLogs.removeIf(log -> log.getRecordId().equals(recordId));
     }
 
     public List<EventLog> findEventLogsByRecordId(Long recordId) {
@@ -46,7 +65,9 @@ public class DummyPlaybackService {
     }
 
     public EventLog logEvent(EventLog log) {
-        log.setEventId(eventCounter.incrementAndGet());
+        if (log.getEventId() == null) {
+            log.setEventId(eventCounter.incrementAndGet());
+        }
         eventLogs.add(log);
         return log;
     }

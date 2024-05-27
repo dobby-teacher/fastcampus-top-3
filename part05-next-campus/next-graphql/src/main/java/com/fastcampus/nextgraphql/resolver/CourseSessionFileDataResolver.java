@@ -17,6 +17,6 @@ public class CourseSessionFileDataResolver {
 
     @SchemaMapping(typeName = "CourseSessionFile", field = "courseSession")
     public CourseSession getCourseSession(CourseSessionFile courseSessionFile) {
-        return courseSessionService.findSessionById(courseSessionFile.getSessionId()).orElseThrow();
+        return courseSessionService.findSessionById(courseSessionFile.getCourseSessionId()).orElseThrow();
     }
 }

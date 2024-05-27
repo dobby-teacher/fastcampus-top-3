@@ -97,12 +97,10 @@ type CourseRating {
 type CourseSessionFile {
     fileId: ID!
     courseSessionId: ID!
-    courseSession: CourseSession
+    courseSession: CourseSession!
     fileName: String!
     fileType: String!
     filePath: String!
-    createdAt: String
-    updatedAt: String
 }
 
 type PlaybackRecord {
@@ -132,6 +130,7 @@ enum PaymentType {
 # 결제 정보를 나타내는 타입입니다.
 type Payment {
     id: ID!
+    userId: ID!
     user: User!
     paymentType: PaymentType!
     amount: Float!
@@ -142,8 +141,11 @@ type Payment {
 # 강의 등록 정보를 나타내는 타입입니다.
 type Enrollment {
     id: ID!
+    userId: ID!
     user: User!
+    courseId: ID!
     course: Course!
+    paymentId: ID!
     payment: Payment!
     registrationDate: String!
 }
@@ -151,7 +153,9 @@ type Enrollment {
 # 사용자 구독 정보를 나타내는 타입입니다.
 type PlanSubscription {
     id: ID!
+    userId: ID!
     user: User!
+    paymentId: ID!
     payment: Payment!
     startDate: String!
     endDate: String!

@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PlanSubscription {
     private Long id;
+    private Long userId;
     private User user;
+    private Long paymentId;
     private Payment payment;
     private String startDate;
     private String endDate;

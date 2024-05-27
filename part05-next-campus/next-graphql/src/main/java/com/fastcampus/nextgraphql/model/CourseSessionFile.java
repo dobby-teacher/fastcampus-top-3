@@ -9,8 +9,9 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CourseSessionFile {
     private Long fileId;
-    private Long sessionId;
+    private Long courseSessionId;
+    private CourseSession courseSession;
     private String fileName;
     private String fileType;
-    private String filePath;  // This would typically represent a location on disk or a URL
+    private String filePath;
 }

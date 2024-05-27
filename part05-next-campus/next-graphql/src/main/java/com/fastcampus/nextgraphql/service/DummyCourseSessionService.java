@@ -10,12 +10,25 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 @Service
-public class DummyCourseSessionService {
+    public class DummyCourseSessionService {
     private final List<CourseSession> sessions = new ArrayList<>();
     private final AtomicLong sessionCounter = new AtomicLong();
 
-    @Autowired
-    private DummyFileService fileService; // Manage files associated with sessions
+    private final DummyFileService fileService; // Manage files associated with sessions
+
+    public DummyCourseSessionService(DummyFileService fileService) {
+        this.fileService = fileService;
+
+        initData();
+    }
+
+    private void initData() {
+        // Adding dummy course sessions
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 1L, "GraphQL Basics", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 1L, "Advanced GraphQL Queries", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 2L, "Optimizing GraphQL Performance", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 3L, "Introduction to GraphQL Security", new ArrayList<>()));
+    }
 
     public List<CourseSession> findAllSessions() {
         return new ArrayList<>(sessions);

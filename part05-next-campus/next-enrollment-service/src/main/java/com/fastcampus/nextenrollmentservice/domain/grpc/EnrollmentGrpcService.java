@@ -12,6 +12,7 @@ import net.devh.boot.grpc.server.service.GrpcService;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @GrpcService
 @Slf4j
@@ -47,12 +48,10 @@ public class EnrollmentGrpcService extends EnrollmentServiceGrpc.EnrollmentServi
             Subscription subscription = enrollmentService.manageSubscription(
                     request.getUserId(),
                     startDate,
-                    endDate);
+                    endDate,
+                    request.getPaymentId());
             EnrollmentServiceOuterClass.SubscriptionResponse response = EnrollmentServiceOuterClass.SubscriptionResponse.newBuilder()
-                    .setSubscriptionId(subscription.getSubscriptionId())
-                    .setUserId(subscription.getUserId())
-                    .setStartDate(subscription.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                    .setEndDate(subscription.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                    .setSubscription(subscription.toProto())
                     .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
@@ -73,10 +72,7 @@ public class EnrollmentGrpcService extends EnrollmentServiceGrpc.EnrollmentServi
                     startDate,
                     endDate);
             EnrollmentServiceOuterClass.SubscriptionResponse response = EnrollmentServiceOuterClass.SubscriptionResponse.newBuilder()
-                    .setSubscriptionId(subscription.getSubscriptionId())
-                    .setUserId(subscription.getUserId())
-                    .setStartDate(subscription.getStartDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
-                    .setEndDate(subscription.getEndDate().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli())
+                    .setSubscription(subscription.toProto())
                     .build();
             responseObserver.onNext(response);
             responseObserver.onCompleted();
@@ -103,6 +99,31 @@ public class EnrollmentGrpcService extends EnrollmentServiceGrpc.EnrollmentServi
                 .setHasAccess(hasAccess)
                 .build();
         responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getUserEnrollments(EnrollmentServiceOuterClass.UserEnrollmentsRequest request, StreamObserver<EnrollmentServiceOuterClass.UserEnrollmentsResponse> responseObserver) {
+        List<Enrollment> enrollments = enrollmentService.getUserEnrollments(request.getUserId());
+        EnrollmentServiceOuterClass.UserEnrollmentsResponse.Builder responseBuilder = EnrollmentServiceOuterClass.UserEnrollmentsResponse.newBuilder();
+
+        for (Enrollment enrollment : enrollments) {
+            responseBuilder.addEnrollments(enrollment.toProto());
+        }
+
+        responseObserver.onNext(responseBuilder.build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void getUserPlanSubscriptions(EnrollmentServiceOuterClass.UserSubscriptionsRequest request, StreamObserver<EnrollmentServiceOuterClass.UserSubscriptionsResponse> responseObserver) {
+        List<Subscription> subscriptions = enrollmentService.getUserPlanSubscriptions(request.getUserId());
+        EnrollmentServiceOuterClass.UserSubscriptionsResponse.Builder responseBuilder = EnrollmentServiceOuterClass.UserSubscriptionsResponse.newBuilder();
+
+        for (Subscription subscription : subscriptions) {
+            responseBuilder.addSubscriptions(subscription.toProto());
+        }
+        responseObserver.onNext(responseBuilder.build());
         responseObserver.onCompleted();
     }
 }

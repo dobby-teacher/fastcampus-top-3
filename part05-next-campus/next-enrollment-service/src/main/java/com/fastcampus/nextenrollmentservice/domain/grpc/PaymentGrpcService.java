@@ -46,4 +46,14 @@ public class PaymentGrpcService extends FakePaymentServiceGrpc.FakePaymentServic
         responseObserver.onNext(response);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void getPaymentsByPaymentId(EnrollmentServiceOuterClass.PaymentsByIdRequest request, StreamObserver<EnrollmentServiceOuterClass.PaymentsByIdResponse> responseObserver) {
+        Payment payment = paymentService.getPaymentById(request.getPaymentId());
+        EnrollmentServiceOuterClass.PaymentsByIdResponse response = EnrollmentServiceOuterClass.PaymentsByIdResponse.newBuilder()
+                .setPayment(payment.toProto())
+                .build();
+        responseObserver.onNext(response);
+        responseObserver.onCompleted();
+    }
 }

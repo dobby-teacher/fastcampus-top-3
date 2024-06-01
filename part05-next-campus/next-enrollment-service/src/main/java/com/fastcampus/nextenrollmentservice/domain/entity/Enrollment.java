@@ -1,8 +1,10 @@
 package com.fastcampus.nextenrollmentservice.domain.entity;
 
+import com.fastcampus.nextenrollmentservice.domain.service.EnrollmentServiceOuterClass;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Data
 @Entity
@@ -27,4 +29,14 @@ public class Enrollment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id", insertable = false, updatable = false)
     private Payment payment;
+
+    public EnrollmentServiceOuterClass.Enrollment toProto() {
+        return EnrollmentServiceOuterClass.Enrollment.newBuilder()
+                .setEnrollmentId(this.enrollmentId)
+                .setUserId(this.userId)
+                .setCourseId(this.courseId)
+                .setPaymentId(this.paymentId)
+                .setRegistrationDate(this.registrationDate.atZone(ZoneId.systemDefault()).toEpochSecond())
+                .build();
+    }
 }

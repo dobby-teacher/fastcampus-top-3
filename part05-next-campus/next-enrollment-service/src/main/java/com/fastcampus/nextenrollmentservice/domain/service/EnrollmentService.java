@@ -7,6 +7,7 @@ import com.fastcampus.nextenrollmentservice.domain.repository.SubscriptionReposi
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -30,11 +31,12 @@ public class EnrollmentService {
         return enrollmentRepository.save(enrollment);
     }
 
-    public Subscription manageSubscription(long userId, LocalDateTime startDate, LocalDateTime endDate) {
+    public Subscription manageSubscription(long userId, LocalDateTime startDate, LocalDateTime endDate, long paymentId) {
         Subscription subscription = new Subscription();
         subscription.setUserId(userId);
         subscription.setStartDate(startDate);
         subscription.setEndDate(endDate);
+        subscription.setPaymentId(paymentId);
         return subscriptionRepository.save(subscription);
     }
 
@@ -54,5 +56,13 @@ public class EnrollmentService {
     public boolean checkSubscriptionAccess(long userId, LocalDateTime now) {
         Optional<Subscription> subscription = subscriptionRepository.findTopByUserIdAndEndDateAfterOrderByEndDateDesc(userId, now);
         return subscription.isPresent() && !subscription.get().getEndDate().isBefore(now);
+    }
+
+    public List<Enrollment> getUserEnrollments(long userId) {
+        return enrollmentRepository.findAllByUserId(userId);
+    }
+
+    public List<Subscription> getUserPlanSubscriptions(long userId) {
+        return subscriptionRepository.findAllByUserId(userId);
     }
 }

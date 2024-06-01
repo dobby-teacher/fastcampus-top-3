@@ -17,12 +17,16 @@ service EnrollmentService {
 
   // CheckSubscriptionAccess는 특정 사용자가 특정 구독에 접근할 수 있는지 확인합니다.
   rpc CheckSubscriptionAccess(SubscriptionAccessRequest) returns (SubscriptionAccessResponse);
+
+  rpc GetUserEnrollments(UserEnrollmentsRequest) returns (UserEnrollmentsResponse);
+  rpc GetUserPlanSubscriptions(UserSubscriptionsRequest) returns (UserSubscriptionsResponse);
 }
 
 service FakePaymentService {
   // CreatePayment는 결제 거래 생성을 시뮬레이션합니다.
   rpc CreatePayment(PaymentRequest) returns (PaymentResponse);
   rpc ListUserPayments(UserPaymentsRequest) returns (UserPaymentsResponse);
+  rpc GetPaymentsByPaymentId(PaymentsByIdRequest) returns (PaymentsByIdResponse);
 }
 
 // Requests and responses for the EnrollmentService
@@ -52,10 +56,7 @@ message RenewSubscriptionRequest {
 }
 
 message SubscriptionResponse {
-  int64 subscription_id = 1;
-  int64 user_id = 2;
-  int64 start_date = 3; // Unix timestamp
-  int64 end_date = 4; // Unix timestamp
+  Subscription subscription = 1;
 }
 
 message CourseAccessRequest {
@@ -100,6 +101,48 @@ message UserPaymentsRequest {
   int64 user_id = 1;
 }
 
+message PaymentsByIdRequest {
+  int64 payment_id = 1;
+}
+
+message PaymentsByIdResponse {
+  PaymentResponse payment = 1;
+}
+
 message UserPaymentsResponse {
   repeated PaymentResponse payments = 1;
+}
+
+message UserEnrollmentsRequest {
+  int64 user_id = 1;
+}
+
+message UserEnrollmentsResponse {
+  repeated Enrollment enrollments = 1;
+}
+
+message Enrollment {
+  int64 enrollment_id = 1;
+  int64 user_id = 2;
+  int64 course_id = 3;
+  int64 registration_date = 4; // Unix timestamp
+  string status = 5; // Active, Completed, etc.
+  int64 payment_id = 6;
+}
+
+message UserSubscriptionsRequest {
+  int64 user_id = 1;
+}
+
+message UserSubscriptionsResponse {
+  repeated Subscription subscriptions = 1;
+}
+
+message Subscription {
+  int64 subscription_id = 1;
+  int64 user_id = 2;
+  int64 start_date = 3; // Unix timestamp
+  int64 end_date = 4; // Unix timestamp
+  string status = 5; // Active, Expired, etc.
+  int64 payment_id = 6;
 }

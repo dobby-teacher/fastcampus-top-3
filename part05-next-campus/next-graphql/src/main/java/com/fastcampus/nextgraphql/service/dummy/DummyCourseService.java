@@ -1,4 +1,4 @@
-package com.fastcampus.nextgraphql.service;
+package com.fastcampus.nextgraphql.service.dummy;
 
 import com.fastcampus.nextgraphql.model.Course;
 import com.fastcampus.nextgraphql.model.CourseRating;
@@ -17,14 +17,11 @@ public class DummyCourseService {
     private final List<Course> courses = new ArrayList<>();
     private final List<CourseSession> sessions = new ArrayList<>();
     private final List<CourseRating> ratings = new ArrayList<>();
-    private final AtomicLong courseCounter = new AtomicLong();
-    private final AtomicLong sessionCounter = new AtomicLong();
-    private final AtomicLong ratingCounter = new AtomicLong();
+    private final AtomicLong courseCounter = new AtomicLong(100);
+    private final AtomicLong sessionCounter = new AtomicLong(100);
+    private final AtomicLong ratingCounter = new AtomicLong(100);
 
-    private final DummyFileService fileService; // Injecting the file service
-
-    public DummyCourseService(DummyFileService fileService) {
-        this.fileService = fileService;
+    public DummyCourseService() {
         initData();
     }
 
@@ -34,9 +31,9 @@ public class DummyCourseService {
         courses.add(new Course(courseCounter.incrementAndGet(), "Advanced GraphQL", "Deep dive into GraphQL", 102L, new ArrayList<>(), new ArrayList<>()));
 
         // Adding dummy sessions
-        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 1L, "Session 1: Basics", new ArrayList<>()));
-        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 1L, "Session 2: Queries", new ArrayList<>()));
-        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 2L, "Session 1: Performance", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), "Session 1: Basics", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), "Session 2: Queries", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), "Session 1: Performance", new ArrayList<>()));
 
         // Linking sessions to courses
         courses.get(0).getCourseSessions().add(sessions.get(0));
@@ -76,20 +73,18 @@ public class DummyCourseService {
     }
 
     public List<CourseSession> findAllSessionsByCourseId(Long courseId) {
-        return sessions.stream()
-                .filter(session -> session.getCourseId().equals(courseId))
-                .collect(Collectors.toList());
+        return courses.stream()
+                .filter(courses -> courses.getId().equals(courseId))
+                .toList()
+                .get(0)
+                .getCourseSessions();
     }
 
     public CourseSession addSessionToCourse(Long courseId, String title) {
-        CourseSession newSession = new CourseSession(sessionCounter.incrementAndGet(), courseId, title, new ArrayList<>());
+        CourseSession newSession = new CourseSession(sessionCounter.incrementAndGet(), title, new ArrayList<>());
         sessions.add(newSession);
         findCourseById(courseId).ifPresent(course -> course.getCourseSessions().add(newSession));
         return newSession;
-    }
-
-    public List<CourseSessionFile> findAllSessionFilesBySessionId(Long sessionId) {
-        return fileService.findFilesBySessionId(sessionId);
     }
 
     public CourseRating addRatingToCourse(Long userId, Long courseId, Integer rating, String comment) {
@@ -97,5 +92,11 @@ public class DummyCourseService {
         ratings.add(newRating);
         findCourseById(courseId).ifPresent(course -> course.getRatings().add(newRating));
         return newRating;
+    }
+
+    public Optional<CourseSession> findSessionById(Long sessionId) {
+        return sessions.stream()
+                .filter(session -> session.getId().equals(sessionId))
+                .findFirst();
     }
 }

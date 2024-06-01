@@ -2,16 +2,17 @@ package com.fastcampus.nextgraphql.resolver;
 
 import com.fastcampus.nextgraphql.model.Course;
 import com.fastcampus.nextgraphql.model.CourseRating;
-import com.fastcampus.nextgraphql.service.DummyCourseService;
+import com.fastcampus.nextgraphql.service.CourseService;
+import com.fastcampus.nextgraphql.service.dummy.DummyCourseService;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
 public class CourseRatingDataResolver {
 
-    private final DummyCourseService courseService;
+    private final CourseService courseService;
 
-    public CourseRatingDataResolver(DummyCourseService courseService) {
+    public CourseRatingDataResolver(CourseService courseService) {
         this.courseService = courseService;
     }
 

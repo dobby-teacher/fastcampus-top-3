@@ -1,4 +1,4 @@
-package com.fastcampus.nextgraphql.service;
+package com.fastcampus.nextgraphql.service.dummy;
 
 import com.fastcampus.nextgraphql.model.CourseSessionFile;
 import org.springframework.stereotype.Service;

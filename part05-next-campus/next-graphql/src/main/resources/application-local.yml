@@ -16,3 +16,21 @@ eureka:
       defaultZone: http://localhost:8000/eureka/
     registerWithEureka: true
     fetchRegistry: true
+
+grpc:
+  client:
+    next-playback-service:
+      address: 'discovery:///next-playback-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    next-payment-service:
+      address: 'discovery:///next-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    next-enrollment-service:
+      address: 'discovery:///next-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext

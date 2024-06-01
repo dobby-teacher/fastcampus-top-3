@@ -1,4 +1,4 @@
-package com.fastcampus.nextgraphql.service;
+package com.fastcampus.nextgraphql.service.dummy;
 
 import com.fastcampus.nextgraphql.model.User;
 import org.springframework.stereotype.Service;
@@ -27,10 +27,15 @@ public class DummyUserService {
         return new ArrayList<>(users);
     }
 
-    public User saveUser(User user) {
+    public User createUser(String name, String email, String password) {
+        User user = new User();
         if (user.getId() == null) {
             user.setId(counter.incrementAndGet());
         }
+        user.setName(name);
+        user.setEmail(email);
+        user.setPasswordHash(password);
+
         users.add(user);
         return user;
     }

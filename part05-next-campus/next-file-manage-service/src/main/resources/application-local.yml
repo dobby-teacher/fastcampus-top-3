@@ -33,6 +33,7 @@ spring:
   sql:
     init:
       data-locations: classpath:sql/data.sql
+      schema-locations: classpath:sql/schema-h2.sql
 
 eureka:
   client:
@@ -43,3 +44,6 @@ eureka:
 
 file:
   upload-dir: ./uploads
+
+server:
+  port: 8003

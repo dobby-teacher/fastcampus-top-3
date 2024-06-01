@@ -4,9 +4,11 @@ import com.fastcampus.nextgraphql.model.Course;
 import com.fastcampus.nextgraphql.model.Enrollment;
 import com.fastcampus.nextgraphql.model.Payment;
 import com.fastcampus.nextgraphql.model.User;
-import com.fastcampus.nextgraphql.service.DummyCourseService;
-import com.fastcampus.nextgraphql.service.DummyPaymentService;
-import com.fastcampus.nextgraphql.service.DummyUserService;
+import com.fastcampus.nextgraphql.service.CourseService;
+import com.fastcampus.nextgraphql.service.EnrollmentService;
+import com.fastcampus.nextgraphql.service.UserService;
+import com.fastcampus.nextgraphql.service.dummy.DummyCourseService;
+import com.fastcampus.nextgraphql.service.dummy.DummyUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
@@ -14,15 +16,15 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class EnrollmentDataResolver {
 
-    private final DummyUserService userService;
-    private final DummyCourseService courseService;
-    private final DummyPaymentService paymentService;
+    private final UserService userService;
+    private final CourseService courseService;
+    private final EnrollmentService enrollmentService;
 
     @Autowired
-    public EnrollmentDataResolver(DummyUserService userService, DummyCourseService courseService, DummyPaymentService paymentService) {
+    public EnrollmentDataResolver(UserService userService, CourseService courseService, EnrollmentService enrollmentService) {
         this.userService = userService;
         this.courseService = courseService;
-        this.paymentService = paymentService;
+        this.enrollmentService = enrollmentService;
     }
 
     @SchemaMapping(typeName = "Enrollment", field = "user")
@@ -37,6 +39,6 @@ public class EnrollmentDataResolver {
 
     @SchemaMapping(typeName = "Enrollment", field = "payment")
     public Payment getPayment(Enrollment enrollment) {
-        return paymentService.findPaymentById(enrollment.getPaymentId()).orElse(null);
+        return enrollmentService.findPaymentById(enrollment.getPaymentId());
     }
 }

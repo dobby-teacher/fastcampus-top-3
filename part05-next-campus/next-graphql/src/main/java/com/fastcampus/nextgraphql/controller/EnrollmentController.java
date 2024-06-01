@@ -3,8 +3,8 @@ package com.fastcampus.nextgraphql.controller;
 import com.fastcampus.nextgraphql.model.Enrollment;
 import com.fastcampus.nextgraphql.model.Payment;
 import com.fastcampus.nextgraphql.model.PlanSubscription;
-import com.fastcampus.nextgraphql.service.DummyEnrollmentService;
-import com.fastcampus.nextgraphql.service.DummyPaymentService;
+import com.fastcampus.nextgraphql.service.EnrollmentService;
+import com.fastcampus.nextgraphql.service.dummy.DummyEnrollmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,13 +15,11 @@ import java.util.List;
 
 @Controller
 public class EnrollmentController {
-    private final DummyEnrollmentService enrollmentService;
-    private final DummyPaymentService paymentService;
+    private final EnrollmentService enrollmentService;
 
     @Autowired
-    public EnrollmentController(DummyEnrollmentService enrollmentService, DummyPaymentService paymentService) {
+    public EnrollmentController(EnrollmentService enrollmentService) {
         this.enrollmentService = enrollmentService;
-        this.paymentService = paymentService;
     }
 
     @QueryMapping
@@ -35,7 +33,19 @@ public class EnrollmentController {
     }
 
     @MutationMapping
-    public Payment createPayment(@Argument Long userId, @Argument Float amount, @Argument String paymentType, @Argument String paymentMethod) {
-        return paymentService.createPayment(userId, amount, paymentType, paymentMethod);
+    public Payment purchaseCourse(@Argument Long userId, @Argument Long courseId, @Argument Float amount, @Argument String paymentMethod) {
+        return enrollmentService.purchaseCourse(userId, courseId, amount, paymentMethod);
+    }
+
+    @MutationMapping
+    public Payment purchaseSubscription(@Argument Long userId, @Argument Float amount, @Argument String paymentMethod) {
+        return enrollmentService.purchaseSubscription(userId, amount, paymentMethod);
+    }
+
+    @QueryMapping
+    public boolean checkCourseAccess(@Argument Long userId, @Argument Long courseId) {
+        // 구독 또는 개별 권한이 있는 경우 허용
+        return enrollmentService.checkSubscriptionAccess(userId)
+                || enrollmentService.checkCourseAccess(courseId, userId);
     }
 }

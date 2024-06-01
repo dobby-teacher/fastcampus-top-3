@@ -13,12 +13,11 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     show-sql: true
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
         use_sql_comments: true
-
 
   h2:
     console:
@@ -27,7 +26,7 @@ spring:
   sql:
     init:
       data-locations: classpath:sql/data.sql
-      schema-locations: classpath:sql/schema-mysql.sql
+      schema-locations: classpath:sql/schema-h2.sql
       mode: always
 
 eureka:
@@ -36,3 +35,6 @@ eureka:
       defaultZone: http://localhost:8000/eureka/
     registerWithEureka: true
     fetchRegistry: true
+
+server:
+  port: 8001

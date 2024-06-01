@@ -1,10 +1,11 @@
-package com.fastcampus.nextgraphql.service;
+package com.fastcampus.nextgraphql.service.dummy;
 
 import com.fastcampus.nextgraphql.model.EventLog;
 import com.fastcampus.nextgraphql.model.PlaybackRecord;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
@@ -38,12 +39,22 @@ public class DummyPlaybackService {
         return new ArrayList<>(records);
     }
 
-    public PlaybackRecord save(PlaybackRecord record) {
-        if (record.getRecordId() == null) {
-            record.setRecordId(recordCounter.incrementAndGet());
-        }
+    public PlaybackRecord startRecord(Long userId, Long fileId) {
+        PlaybackRecord record = new PlaybackRecord();
+        record.setRecordId(recordCounter.incrementAndGet());
+        record.setUserId(userId);
+        record.setFileId(fileId);
+
         records.add(record);
         return record;
+    }
+
+    public PlaybackRecord endRecord(Long recordId) {
+        PlaybackRecord endRecord = records.stream().filter(record -> record.getRecordId().equals(recordId))
+                .findFirst()
+                .orElseThrow();
+        endRecord.setEndTime(new Date().toString());
+        return endRecord;
     }
 
     public Optional<PlaybackRecord> findById(Long recordId) {

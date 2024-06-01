@@ -37,6 +37,9 @@ dependencies {
 	testImplementation 'org.springframework.graphql:spring-graphql-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 	implementation 'com.graphql-java:graphql-java-extended-scalars:21.0'
+
+	implementation 'net.devh:grpc-client-spring-boot-starter:3.0.0.RELEASE'
+	implementation project(':next-grpc-common')
 }
 
 dependencyManagement {

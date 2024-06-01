@@ -2,9 +2,11 @@ package com.fastcampus.nextgraphql.controller;
 
 import com.fastcampus.nextgraphql.model.CourseRating;
 import com.fastcampus.nextgraphql.model.CourseSession;
-import com.fastcampus.nextgraphql.service.DummyCourseService;
+import com.fastcampus.nextgraphql.service.CourseService;
 import com.fastcampus.nextgraphql.model.Course;
 import com.fastcampus.nextgraphql.model.CourseSessionFile;
+import com.fastcampus.nextgraphql.service.FileService;
+import com.fastcampus.nextgraphql.service.dummy.DummyFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -15,11 +17,13 @@ import java.util.List;
 
 @Controller
 public class CourseController {
-    private final DummyCourseService courseService;
+    private final CourseService courseService;
+    private final FileService fileService;
 
     @Autowired
-    public CourseController(DummyCourseService courseService) {
+    public CourseController(CourseService courseService, FileService fileService) {
         this.courseService = courseService;
+        this.fileService = fileService;
     }
 
     @QueryMapping
@@ -39,7 +43,7 @@ public class CourseController {
 
     @QueryMapping
     public List<CourseSessionFile> getCourseSessionFiles(@Argument Long courseSessionId) {
-        return courseService.findAllSessionFilesBySessionId(courseSessionId);
+        return fileService.findFilesBySessionId(courseSessionId);
     }
 
     @MutationMapping

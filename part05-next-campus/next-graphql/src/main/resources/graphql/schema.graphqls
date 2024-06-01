@@ -8,15 +8,15 @@ type Query {
     listCourses: [Course]
     # 특정 강의 정보를 course ID를 통해 조회합니다.
     getCourse(courseId: ID!): Course
+    # 특정 강의의 세션을 조회합니다.
+    getCourseSessionById(courseSessionId: ID!): CourseSession
     # 특정 강의의 모든 세션을 조회합니다.
     listCourseSessions(courseId: ID!): [CourseSession]
     # 특정 세션의 모든 파일을 조회합니다.
     getCourseSessionFiles(courseSessionId: ID!): [CourseSessionFile]
 
-    # 특정 재생 기록을 ID를 통해 조회합니다.
-    getPlaybackRecord(id: ID!): PlaybackRecord
-    # 특정 재생 기록에 해당하는 모든 이벤트 로그를 조회합니다.
-    listEventLogs(recordId: ID!): [EventLog]
+    # 특정 강의에 대한 권한을 가지고 있는지 여부 체크
+    checkCourseAccess(userId: ID!, courseId: ID!): Boolean!
 
     # 특정 사용자의 모든 구독 정보를 조회합니다.
     getUserPlanSubscriptions(userId: ID!): [PlanSubscription]
@@ -40,12 +40,15 @@ type Mutation {
     rateCourse(userId: ID!, courseId: ID!, rating: Int!, comment: String): CourseRating
 
     # 재생 기록을 생성합니다.
-    recordPlayback(userId: ID!, fileId: ID!, startTime: String!, endTime: String): PlaybackRecord
+    startRecord(userId: ID!, fileId: ID!): PlaybackRecord
+    endRecord(recordId: ID!): PlaybackRecord
+
     # 이벤트를 로깅합니다.
     logEvent(recordId: ID!, userId: ID!, eventType: String!, timestamp: String!): EventLog
 
     # 새 결제 정보를 생성합니다.
-    createPayment(userId: ID!, amount: Float!, paymentType: PaymentType!, paymentMethod: String!): Payment
+    purchaseCourse(userId: ID!, courseId: ID!, amount: Float!, paymentMethod: String!): Payment
+    purchaseSubscription(userId: ID!, amount: Float!, paymentMethod: String!): Payment
 }
 
 type User {
@@ -77,8 +80,6 @@ type Course {
 
 type CourseSession {
     id: ID!
-    courseId: ID!
-    course: Course
     title: String!
     files: [CourseSessionFile]               # 세션에 연결된 모든 파일
 }
@@ -159,4 +160,5 @@ type PlanSubscription {
     payment: Payment!
     startDate: String!
     endDate: String!
+    status: String!
 }

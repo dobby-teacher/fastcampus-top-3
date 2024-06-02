@@ -38,4 +38,8 @@ public class CourseService {
     public List<Course> getAllCourses() {
         return courseRepository.findAll();
     }
+
+    public List<Course> getCourseByIds(List<Long> courseIds) {
+        return courseRepository.findAllById(courseIds);
+    }
 }

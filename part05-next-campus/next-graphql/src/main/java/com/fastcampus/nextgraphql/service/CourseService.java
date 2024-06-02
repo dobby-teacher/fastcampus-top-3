@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -57,6 +58,21 @@ public class CourseService {
 
         return Optional.ofNullable(course);
     }
+
+    public List<Course> findCoursesByIds(List<Long> courseIds) {
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL);
+        courseIds.forEach(id -> builder.queryParam("courseId", id));
+
+        URI uri = builder.build().toUri();
+
+        Course[] courses = restTemplate.getForObject(uri, Course[].class);
+        if (courses == null) {
+            return Collections.emptyList();
+        }
+
+        return Arrays.asList(courses);
+    }
+
 
     public List<Course> findAllCourses() {
         Course[] courses = restTemplate.getForObject(BASE_URL, Course[].class);

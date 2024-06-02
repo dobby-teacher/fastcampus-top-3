@@ -39,8 +39,15 @@ public class CourseController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Course>> getAllCourses() {
-        List<Course> courses = courseService.getAllCourses();
+    public ResponseEntity<List<Course>> getAllCourses(@RequestParam(required = false) List<Long> courseId) {
+        List<Course> courses;
+        if (courseId == null || courseId.isEmpty()) {
+            courses = courseService.getAllCourses();
+        } else {
+            courses = courseService.getCourseByIds(courseId);
+        }
+
         return ResponseEntity.ok(courses);
+
     }
 }

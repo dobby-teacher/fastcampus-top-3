@@ -5,7 +5,6 @@ import com.fastcampus.nextgraphql.model.CourseRating;
 import com.fastcampus.nextgraphql.model.CourseSession;
 import com.fastcampus.nextgraphql.service.CourseService;
 import com.fastcampus.nextgraphql.model.Course;
-import com.fastcampus.nextgraphql.service.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;

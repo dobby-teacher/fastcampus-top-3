@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CourseService {
 
-    private static final String BASE_URL = "http://next-course-service/courses/";
+    private static final String BASE_URL = "http://next-course-service/courses";
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -50,7 +50,7 @@ public class CourseService {
     public Optional<Course> findCourseById(Long courseId) {
         Course course = null;
         try {
-            course = restTemplate.getForObject(BASE_URL + courseId, Course.class);
+            course = restTemplate.getForObject(BASE_URL + "/" + courseId, Course.class);
         } catch (Exception e) {
             log.error("An error occurred while fetching the course: " + e.getMessage(), e);
         }
@@ -72,7 +72,7 @@ public class CourseService {
         courseSession.setTitle(title);
 
         CourseSession addedSession = restTemplate.postForObject(
-                UriComponentsBuilder.fromUriString(BASE_URL + "{courseId}/sessions")
+                UriComponentsBuilder.fromUriString(BASE_URL + "/{courseId}/sessions")
                         .buildAndExpand(courseId).toUri(), courseSession, CourseSession.class);
 
         if (addedSession != null) {
@@ -83,7 +83,7 @@ public class CourseService {
     }
 
     public Optional<CourseSession> findSessionById(Long courseId, Long sessionId) {
-        String url = UriComponentsBuilder.fromUriString(BASE_URL + "{courseId}/sessions/{sessionId}")
+        String url = UriComponentsBuilder.fromUriString(BASE_URL + "/{courseId}/sessions/{sessionId}")
                 .buildAndExpand(courseId, sessionId).toUriString();
         try {
             CourseSession retrievedSession = restTemplate.getForObject(url, CourseSession.class);
@@ -117,7 +117,7 @@ public class CourseService {
         courseRating.setRating(rating);
         courseRating.setComment(comment);
 
-        String url = UriComponentsBuilder.fromUriString("http://next-course-service/courses/{courseId}/ratings")
+        String url = UriComponentsBuilder.fromUriString(BASE_URL + "/{courseId}/ratings")
                 .buildAndExpand(courseId).toUriString();
         return restTemplate.postForObject(url, courseRating, CourseRating.class);
     }

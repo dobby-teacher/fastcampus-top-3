@@ -1,12 +1,11 @@
 package com.fastcampus.nextgraphql.controller;
 
+import com.fastcampus.nextgraphql.exception.CourseNotFoundException;
 import com.fastcampus.nextgraphql.model.CourseRating;
 import com.fastcampus.nextgraphql.model.CourseSession;
 import com.fastcampus.nextgraphql.service.CourseService;
 import com.fastcampus.nextgraphql.model.Course;
-import com.fastcampus.nextgraphql.model.CourseSessionFile;
 import com.fastcampus.nextgraphql.service.FileService;
-import com.fastcampus.nextgraphql.service.dummy.DummyFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
@@ -32,18 +31,13 @@ public class CourseController {
     }
 
     @QueryMapping
-    public Course getCourse(@Argument Long courseId) {
-        return courseService.findCourseById(courseId).orElseThrow(() -> new RuntimeException("Course not found"));
+    public Course getCourse(@Argument Long userId, @Argument Long courseId) {
+        return courseService.findCourseById(courseId).orElseThrow(() -> new CourseNotFoundException("Course not found"));
     }
 
     @QueryMapping
     public List<CourseSession> listCourseSessions(@Argument Long courseId) {
         return courseService.findAllSessionsByCourseId(courseId);
-    }
-
-    @QueryMapping
-    public List<CourseSessionFile> getCourseSessionFiles(@Argument Long courseSessionId) {
-        return fileService.findFilesBySessionId(courseSessionId);
     }
 
     @MutationMapping

@@ -14,11 +14,13 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class CourseService {
 
+    private static final String BASE_URL = "http://next-course-service/courses/";
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -32,7 +34,7 @@ public class CourseService {
         course.setDescription(description);
         course.setInstructorId(instructorId);
 
-        return restTemplate.postForObject("http://next-course-service/courses", course, Course.class);
+        return restTemplate.postForObject(BASE_URL, course, Course.class);
     }
 
     public Course updateCourse(Long id, String title, String description) {
@@ -41,14 +43,14 @@ public class CourseService {
         course.setTitle(title);
         course.setDescription(description);
 
-        restTemplate.put("http://next-course-service/courses/" + id, course);
+        restTemplate.put(BASE_URL + id, course);
         return course;
     }
 
     public Optional<Course> findCourseById(Long courseId) {
         Course course = null;
         try {
-            course = restTemplate.getForObject("http://next-course-service/courses/" + courseId, Course.class);
+            course = restTemplate.getForObject(BASE_URL + courseId, Course.class);
         } catch (Exception e) {
             log.error("An error occurred while fetching the course: " + e.getMessage(), e);
         }
@@ -57,7 +59,7 @@ public class CourseService {
     }
 
     public List<Course> findAllCourses() {
-        Course[] courses = restTemplate.getForObject("http://next-course-service/courses", Course[].class);
+        Course[] courses = restTemplate.getForObject(BASE_URL, Course[].class);
         if (courses == null) {
             return Collections.emptyList();
         }
@@ -69,16 +71,26 @@ public class CourseService {
         CourseSession courseSession = new CourseSession();
         courseSession.setTitle(title);
 
-        return restTemplate.postForObject(
-                UriComponentsBuilder.fromUriString("http://next-course-service/courses/{courseId}/sessions")
+        CourseSession addedSession = restTemplate.postForObject(
+                UriComponentsBuilder.fromUriString(BASE_URL + "{courseId}/sessions")
                         .buildAndExpand(courseId).toUri(), courseSession, CourseSession.class);
+
+        if (addedSession != null) {
+            addedSession.setCourseId(courseId);
+        }
+
+        return addedSession;
     }
 
     public Optional<CourseSession> findSessionById(Long courseId, Long sessionId) {
-        String url = UriComponentsBuilder.fromUriString("http://next-course-service/courses/{courseId}/sessions/{sessionId}")
+        String url = UriComponentsBuilder.fromUriString(BASE_URL + "{courseId}/sessions/{sessionId}")
                 .buildAndExpand(courseId, sessionId).toUriString();
         try {
             CourseSession retrievedSession = restTemplate.getForObject(url, CourseSession.class);
+            if (retrievedSession != null) {
+                retrievedSession.setCourseId(courseId);
+            }
+
             return Optional.ofNullable(retrievedSession);
         } catch (Exception e) {
             return Optional.empty();
@@ -86,14 +98,16 @@ public class CourseService {
     }
 
     public List<CourseSession> findAllSessionsByCourseId(Long courseId) {
-        String url = UriComponentsBuilder.fromUriString("http://next-course-service/courses/{courseId}/sessions")
+        String url = UriComponentsBuilder.fromUriString(BASE_URL + "/{courseId}/sessions")
                 .buildAndExpand(courseId).toUriString();
         CourseSession[] sessions = restTemplate.getForObject(url, CourseSession[].class);
         if (sessions == null) {
             return Collections.emptyList();
         }
 
-        return Arrays.asList(sessions);
+        return Arrays.stream(sessions)
+                .peek(session -> session.setCourseId(courseId))
+                .collect(Collectors.toList());
     }
 
     public CourseRating addRatingToCourse(Long userId, Long courseId, Integer rating, String comment) {

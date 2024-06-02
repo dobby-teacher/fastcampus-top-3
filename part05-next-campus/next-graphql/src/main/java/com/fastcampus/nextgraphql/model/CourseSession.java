@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class CourseSession {
     private Long id;
+    private Long courseId;
     private String title;
     private List<CourseSessionFile> files;
 }

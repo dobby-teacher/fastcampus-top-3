@@ -24,13 +24,13 @@ public class UserController {
     }
 
     @MutationMapping
-    public User updateUser(@Argument Long id, @Argument String name, @Argument String email) {
-        return userService.updateUser(id, name, email);
+    public User updateUser(@Argument Long userId, @Argument String name, @Argument String email) {
+        return userService.updateUser(userId, name, email);
     }
 
     @QueryMapping
-    public User getUser(@Argument Long id) {
-        return userService.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+    public User getUser(@Argument Long userId) {
+        return userService.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
     }
 }
 

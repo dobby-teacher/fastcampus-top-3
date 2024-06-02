@@ -31,9 +31,9 @@ public class DummyCourseService {
         courses.add(new Course(courseCounter.incrementAndGet(), "Advanced GraphQL", "Deep dive into GraphQL", 102L, new ArrayList<>(), new ArrayList<>()));
 
         // Adding dummy sessions
-        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), "Session 1: Basics", new ArrayList<>()));
-        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), "Session 2: Queries", new ArrayList<>()));
-        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), "Session 1: Performance", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 100L, "Session 1: Basics", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 100L, "Session 2: Queries", new ArrayList<>()));
+        sessions.add(new CourseSession(sessionCounter.incrementAndGet(), 100L, "Session 1: Performance", new ArrayList<>()));
 
         // Linking sessions to courses
         courses.get(0).getCourseSessions().add(sessions.get(0));
@@ -81,7 +81,7 @@ public class DummyCourseService {
     }
 
     public CourseSession addSessionToCourse(Long courseId, String title) {
-        CourseSession newSession = new CourseSession(sessionCounter.incrementAndGet(), title, new ArrayList<>());
+        CourseSession newSession = new CourseSession(sessionCounter.incrementAndGet(), courseId, title, new ArrayList<>());
         sessions.add(newSession);
         findCourseById(courseId).ifPresent(course -> course.getCourseSessions().add(newSession));
         return newSession;

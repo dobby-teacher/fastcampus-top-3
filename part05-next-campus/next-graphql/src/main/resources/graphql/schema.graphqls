@@ -4,15 +4,12 @@ directive @authorize(role: String, permission: String) on FIELD_DEFINITION | OBJ
 type Query {
     # 사용자 정보를 ID를 통해 조회합니다.
     getUser(userId: ID!): User @authenticate @authorize(role: "user", permission: "read_user")
-    # 사용자 정보를 email을 통해 조회합니다.
-    getUserByEmail(email: String!): User @authenticate @authorize(role: "user", permission: "read_user")
 
     # 모든 강의를 조회합니다.
     listCourses: [Course]
     # 특정 강의 정보를 course ID를 통해 조회합니다.
     getCourse(userId: ID!, courseId: ID!): Course @authenticate
-    # 특정 강의의 세션을 조회합니다.
-    getCourseSessionById(courseSessionId: ID!): CourseSession
+
     # 특정 강의의 모든 세션을 조회합니다.
     listCourseSessions(courseId: ID!): [CourseSession]
 
@@ -56,9 +53,6 @@ type User {
     id: ID!
     name: String!
     email: String!
-    createdAt: String
-    updatedAt: String
-    loginHistories: [UserLoginHistory]  # 사용자의 로그인 기록을 조회합니다.
 }
 
 type UserLoginHistory {
@@ -74,7 +68,6 @@ type Course {
     description: String
     instructorId: ID!
     instructor: User
-    createdAt: String
     courseSessions: [CourseSession]                # 강의에 속한 모든 세션
     ratings: [CourseRating]            # 강의에 대한 사용자 평가
 }
@@ -95,7 +88,6 @@ type CourseRating {
     user: User
     rating: Int!
     comment: String
-    createdAt: String
 }
 
 type CourseSessionFile {
@@ -108,7 +100,6 @@ type CourseSessionFile {
 type PlaybackRecord {
     recordId: ID!
     userId: ID!
-    user: User
     fileId: ID!
     startTime: String!
     endTime: String
@@ -117,9 +108,7 @@ type PlaybackRecord {
 type EventLog {
     eventId: ID!
     recordId: ID!
-    playbackRecord: PlaybackRecord
     userId: ID!
-    user: User
     eventType: String!
     timestamp: String!
 }

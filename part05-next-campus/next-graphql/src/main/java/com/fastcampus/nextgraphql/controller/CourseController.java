@@ -17,12 +17,10 @@ import java.util.List;
 @Controller
 public class CourseController {
     private final CourseService courseService;
-    private final FileService fileService;
 
     @Autowired
-    public CourseController(CourseService courseService, FileService fileService) {
+    public CourseController(CourseService courseService) {
         this.courseService = courseService;
-        this.fileService = fileService;
     }
 
     @QueryMapping

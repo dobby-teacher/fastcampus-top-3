@@ -39,7 +39,7 @@ public class GraphqlConfig {
 
     @Bean
     public Instrumentation maxQueryDepthInstrumentation() {
-        return new MaxQueryDepthInstrumentation(5);
+        return new MaxQueryDepthInstrumentation(20);
     }
 
     @Slf4j

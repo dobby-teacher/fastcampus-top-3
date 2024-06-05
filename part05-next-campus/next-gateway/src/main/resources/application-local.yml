@@ -9,6 +9,11 @@ spring:
           predicates:
             - Path=/auth/**
             - Method=POST,GET
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: authCircuitBreaker
+                fallbackUri: forward:/fallback/authFailure
 
         - id: graphql_route
           uri: lb://next-graphql
@@ -51,5 +56,30 @@ logging:
     org.springframework.web.reactive: DEBUG
     reactor.ipc.netty: DEBUG
     reactor.netty: DEBUG
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      authCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 100 # 서킷 브레이커가 고려할 최근 호출 수
+        minimumNumberOfCalls: 20 # 최소 호출 횟수, 이 수를 넘어야 서킷 브레이커의 상태가 변경됨
+        permittedNumberOfCallsInHalfOpenState: 10 # 반-열린 상태에서 허용되는 호출 수
+        automaticTransitionFromOpenToHalfOpenEnabled: true # 서킷 브레이커가 자동으로 반-열린 상태로 전환되는지 여부
+        waitDurationInOpenState: 5000 # 서킷 브레이커가 열린 상태로 유지되는 시간
+        failureRateThreshold: 50 # 실패율 기준, 이 비율을 초과하는 실패가 발생하면 서킷 브레이커가 열립니다
+        eventConsumerBufferSize: 10
+        recordExceptions: # 서킷 브레이커가 실패로 기록할 예외 유형
+          - org.springframework.web.client.HttpServerErrorException
+          - java.io.IOException
+          - java.util.concurrent.TimeoutException
+        ignoreExceptions: # 서킷 브레이커가 무시할 예외 유형
+          - org.springframework.web.client.HttpClientErrorException
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "health,info,circuitbreakers"
 server:
   port: 9000

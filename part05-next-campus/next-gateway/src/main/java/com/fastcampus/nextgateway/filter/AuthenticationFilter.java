@@ -1,8 +1,11 @@
 package com.fastcampus.nextgateway.filter;
 
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.client.loadbalancer.reactive.ReactorLoadBalancerExchangeFilterFunction;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ServerWebExchange;
@@ -13,13 +16,15 @@ import java.util.Map;
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
 
+    @LoadBalanced
     private final WebClient webClient;
 
-    public AuthenticationFilter() {
+    public AuthenticationFilter(ReactorLoadBalancerExchangeFilterFunction lbFunction) {
         super(Config.class);
         this.webClient = WebClient.builder()
-                                  .baseUrl("http://next-user-service/auth")
-                                  .build();
+                .filter(lbFunction)
+                .baseUrl("http://next-user-service")
+                .build();
     }
 
     @Override
@@ -30,19 +35,27 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 String token = authHeader.substring(7);
                 return validateToken(token)
                         .flatMap(userId -> proceedWithUserId(userId, exchange, chain))
-                        .switchIfEmpty(chain.filter(exchange)); // 토큰 검증 실패 시 계속 진행할 수 있도록 처리
+                        .switchIfEmpty(chain.filter(exchange)) // If token is invalid, continue without setting userId
+                        .onErrorResume(e -> handleAuthenticationError(exchange, e)); // Handle errors
             }
-            return chain.filter(exchange); // 헤더가 없거나 Bearer 토큰이 아닐 때 요청 계속
+
+            return chain.filter(exchange);
         };
+    }
+
+    private Mono<Void> handleAuthenticationError(ServerWebExchange exchange, Throwable e) {
+        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+        return exchange.getResponse().setComplete();
     }
 
     private Mono<Long> validateToken(String token) {
         return webClient.post()
-                        .uri("/validate")
-                        .bodyValue("{\"token\":\"" + token + "\"}")
-                        .retrieve()
-                        .bodyToMono(Map.class)
-                        .map(response -> (Long) response.get("id"));
+                .uri("/auth/validate")
+                .bodyValue("{\"token\":\"" + token + "\"}")
+                .header("Content-Type", "application/json")
+                .retrieve()
+                .bodyToMono(Map.class)
+                .map(response -> Long.valueOf(response.get("id").toString()) );
     }
 
     private Mono<Void> proceedWithUserId(Long userId, ServerWebExchange exchange, GatewayFilterChain chain) {

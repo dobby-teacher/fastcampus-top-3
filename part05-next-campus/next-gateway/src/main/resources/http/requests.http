@@ -31,6 +31,7 @@ Content-Type: application/json
 
 ### GetCourse
 GRAPHQL http://localhost:9000/graphql
+Authorization: Bearer {{authToken}}
 
 query {
     getCourse(courseId: "100", userId: "{{userId}}") {
@@ -46,6 +47,20 @@ query {
 
 ### getUserEnrollments
 GRAPHQL http://localhost:9000/graphql
+Authorization: Bearer {{authToken}}
+
+query {
+    getUserEnrollments(userId: "{{userId}}") {
+        course {
+            description
+            title
+        }
+    }
+}
+
+### getUserEnrollments (Invalid Token)
+GRAPHQL http://localhost:9000/graphql
+Authorization: Bearer 1234
 
 query {
     getUserEnrollments(userId: "{{userId}}") {

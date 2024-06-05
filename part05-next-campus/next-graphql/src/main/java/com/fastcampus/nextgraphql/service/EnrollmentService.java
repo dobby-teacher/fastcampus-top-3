@@ -5,6 +5,7 @@ import com.fastcampus.nextgraphql.model.Enrollment;
 import com.fastcampus.nextgraphql.model.Payment;
 import com.fastcampus.nextgraphql.model.PlanSubscription;
 import net.devh.boot.grpc.client.inject.GrpcClient;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -100,6 +101,7 @@ public class EnrollmentService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable(value = "payment", key = "#paymentId")
     public Payment findPaymentById(Long paymentId) {
         EnrollmentServiceOuterClass.PaymentsByIdRequest request = EnrollmentServiceOuterClass.PaymentsByIdRequest.newBuilder()
                 .setPaymentId(paymentId)

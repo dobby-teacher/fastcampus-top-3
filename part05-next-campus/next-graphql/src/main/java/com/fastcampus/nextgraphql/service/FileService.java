@@ -2,6 +2,7 @@ package com.fastcampus.nextgraphql.service;
 
 import com.fastcampus.nextgraphql.model.CourseSessionFile;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -20,6 +21,7 @@ public class FileService {
         this.restTemplate = restTemplate;
     }
 
+    @Cacheable(value = "files", key = "#sessionId")
     public List<CourseSessionFile> findFilesBySessionId(Long sessionId) {
         String url = UriComponentsBuilder.fromUriString(BASE_URL)
                                          .buildAndExpand(sessionId).toUriString();
@@ -27,6 +29,7 @@ public class FileService {
         return Optional.ofNullable(file).stream().toList();
     }
 
+    @Cacheable(value = "file", key = "#fileId")
     public Optional<CourseSessionFile> getFileById(Long sessionId, Long fileId) {
         String url = UriComponentsBuilder.fromUriString(BASE_URL + "/{fileId}")
                                          .buildAndExpand(sessionId, fileId).toUriString();

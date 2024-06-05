@@ -5,6 +5,7 @@ import com.fastcampus.nextgraphql.model.CourseRating;
 import com.fastcampus.nextgraphql.model.CourseSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -48,6 +49,7 @@ public class CourseService {
         return course;
     }
 
+    @Cacheable(value = "course", key = "#courseId")
     public Optional<Course> findCourseById(Long courseId) {
         Course course = null;
         try {
@@ -59,6 +61,7 @@ public class CourseService {
         return Optional.ofNullable(course);
     }
 
+    @Cacheable(value = "courses", key = "#courseIds")
     public List<Course> findCoursesByIds(List<Long> courseIds) {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(BASE_URL);
         courseIds.forEach(id -> builder.queryParam("courseId", id));

@@ -4,6 +4,7 @@ import com.fastcampus.nextgraphql.model.User;
 import com.fastcampus.nextgraphql.service.dto.PasswordChangeDTO;
 import com.fastcampus.nextgraphql.service.dto.UserDTO;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -26,6 +27,7 @@ public class UserService {
         return restTemplate.postForObject(USER_SERVICE_URL, userDTO, User.class);
     }
 
+    @Cacheable(value = "user", key = "#userId")
     public Optional<User> findById(Long userId) {
         String url = UriComponentsBuilder.fromHttpUrl(USER_SERVICE_URL)
                                          .path("/{userId}")

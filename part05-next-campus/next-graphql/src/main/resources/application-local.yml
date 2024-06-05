@@ -9,6 +9,11 @@ spring:
     schema:
       inspection:
         enabled: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      client-type: lettuce
 
 eureka:
   client:

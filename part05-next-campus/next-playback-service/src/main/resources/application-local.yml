@@ -38,7 +38,7 @@ eureka:
 
 grpc:
   server:
-    port: 9003
+    port: 9005
 
 server:
-  port: 8003
+  port: 8005

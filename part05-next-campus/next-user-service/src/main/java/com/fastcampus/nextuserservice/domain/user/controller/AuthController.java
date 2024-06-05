@@ -5,6 +5,7 @@ import com.fastcampus.nextuserservice.domain.user.dto.TokenRequest;
 import com.fastcampus.nextuserservice.domain.user.entity.User;
 import com.fastcampus.nextuserservice.domain.user.service.JWTService;
 import com.fastcampus.nextuserservice.domain.user.service.UserService;
+import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,13 @@ public class AuthController {
         userService.logUserLogin(existingUser, ipAddress);
         return ResponseEntity.ok(Collections.singletonMap("token", token));
     }
+
+    @PostMapping("/validate")
+    public ResponseEntity<User> validateToken(@RequestBody TokenRequest tokenRequest) {
+        Claims claims = jwtService.parseJwtClaims(tokenRequest.getToken());
+        return ResponseEntity.ok(userService.getUserByEmail(claims.getSubject()).orElseThrow());
+    }
+
 
     @PostMapping("/verify-token")
     public ResponseEntity<Map<String, Boolean>> verifyToken(@RequestBody TokenRequest tokenRequest) {

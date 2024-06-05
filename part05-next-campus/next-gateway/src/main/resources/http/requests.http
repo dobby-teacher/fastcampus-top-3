@@ -1,0 +1,57 @@
+### Create User Fast
+GRAPHQL http://localhost:9000/graphql
+
+mutation {
+    createUser(email: "fast@campus.com", name: "fast", password: "campus") {
+        email
+        id
+        name
+    }
+}
+
+### Generate Token
+POST http://localhost:9000/auth/token
+Content-Type: application/json
+
+{
+  "email": "fast@campus.com",
+  "password": "campus"
+}
+> {% client.global.set("authToken", response.body.token); %}
+
+### ValidateUser
+POST http://localhost:9000/auth/validate
+Content-Type: application/json
+
+{
+  "token": "{{authToken}}"
+}
+
+> {% client.global.set("userId", response.body.id); %}
+
+### GetCourse
+GRAPHQL http://localhost:9000/graphql
+
+query {
+    getCourse(courseId: "100", userId: "{{userId}}") {
+        description
+        id
+        instructorId
+        title
+        courseSessions {
+            title
+        }
+    }
+}
+
+### getUserEnrollments
+GRAPHQL http://localhost:9000/graphql
+
+query {
+    getUserEnrollments(userId: "{{userId}}") {
+        course {
+            description
+            title
+        }
+    }
+}

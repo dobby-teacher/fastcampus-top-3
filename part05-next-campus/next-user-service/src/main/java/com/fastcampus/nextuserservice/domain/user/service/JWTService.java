@@ -64,7 +64,7 @@ public class JWTService {
                 .compact();
     }
 
-    private Claims parseJwtClaims(String token) {
+    public Claims parseJwtClaims(String token) {
         return Jwts.parser()
                 .verifyWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
                 .build()

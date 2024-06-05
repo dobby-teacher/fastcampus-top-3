@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: next-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth_route
+          uri: lb://next-user-service
+          predicates:
+            - Path=/auth/**
+            - Method=POST,GET
+
+        - id: graphql_route
+          uri: lb://next-graphql
+          predicates:
+            - Path=/graphql
+            - Method=POST,GET
+          filters:
+            - AuthenticationFilter
+
+      global-cors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:9090,http://local.next-campus.com"
+            allowedMethods:
+              - POST
+              - GET
+              - PATCH
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8000/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+
+    rest-template-timeout:
+      connect-timeout: 5000
+      connect-request-timeout: 8000
+      socket-timeout: 10000
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+    reactor.netty: DEBUG
+server:
+  port: 9000

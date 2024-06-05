@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: next-graphql
+  graphql:
+    path: /graphql
+    graphiql:
+      enabled: true
+      path: /graphiql
+    schema:
+      inspection:
+        enabled: true
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      client-type: lettuce
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8000/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+
+grpc:
+  client:
+    next-playback-service:
+      address: 'discovery:///next-playback-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    next-payment-service:
+      address: 'discovery:///next-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    next-enrollment-service:
+      address: 'discovery:///next-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext

@@ -1,6 +1,10 @@
 spring:
   application:
     name: next-gateway
+  data:
+    redis:
+      port: 6379
+      host: 127.0.0.1
   cloud:
     gateway:
       routes:
@@ -14,6 +18,17 @@ spring:
               args:
                 name: authCircuitBreaker
                 fallbackUri: forward:/fallback/authFailure
+                statusCodes:
+                  - 500
+
+        - id: file_route
+          uri: lb://next-file-manage-service
+          predicates:
+            - Path=/files/**
+            - Method=POST,GET
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/files/(?<segment>.*),/$\{segment}
 
         - id: graphql_route
           uri: lb://next-graphql
@@ -37,6 +52,11 @@ spring:
 
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 1 # replenishRate는 사용자가 일정 시간 동안(보통 초 단위) 발생시킬 수 있는 요청의 수를 정의
+            redis-rate-limiter.burstCapacity: 5 # burstCapacity는 토큰 버킷이 담을 수 있는 최대 토큰의 수를 정의
+            key-resolver: "#{@ipKeyResolver}"
 eureka:
   client:
     service-url:
@@ -56,30 +76,23 @@ logging:
     org.springframework.web.reactive: DEBUG
     reactor.ipc.netty: DEBUG
     reactor.netty: DEBUG
+    io.github.resilience4j: DEBUG
 
-resilience4j:
-  circuitbreaker:
-    instances:
-      authCircuitBreaker:
-        registerHealthIndicator: true
-        slidingWindowSize: 100 # 서킷 브레이커가 고려할 최근 호출 수
-        minimumNumberOfCalls: 20 # 최소 호출 횟수, 이 수를 넘어야 서킷 브레이커의 상태가 변경됨
-        permittedNumberOfCallsInHalfOpenState: 10 # 반-열린 상태에서 허용되는 호출 수
-        automaticTransitionFromOpenToHalfOpenEnabled: true # 서킷 브레이커가 자동으로 반-열린 상태로 전환되는지 여부
-        waitDurationInOpenState: 5000 # 서킷 브레이커가 열린 상태로 유지되는 시간
-        failureRateThreshold: 50 # 실패율 기준, 이 비율을 초과하는 실패가 발생하면 서킷 브레이커가 열립니다
-        eventConsumerBufferSize: 10
-        recordExceptions: # 서킷 브레이커가 실패로 기록할 예외 유형
-          - org.springframework.web.client.HttpServerErrorException
-          - java.io.IOException
-          - java.util.concurrent.TimeoutException
-        ignoreExceptions: # 서킷 브레이커가 무시할 예외 유형
-          - org.springframework.web.client.HttpClientErrorException
+resilience4j.timelimiter:
+  configs:
+    default:
+      timeoutDuration: 5s
 
 management:
   endpoints:
     web:
       exposure:
-        include: "health,info,circuitbreakers"
+        include: "*"
+  endpoint:
+    shutdown:
+      enabled: true
+    health:
+      show-details: always # actuator에서 디테일한 정보들을 확인하기 위해 설정
+
 server:
   port: 9000

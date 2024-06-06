@@ -59,15 +59,17 @@ class EnrollmentServiceTest {
         long userId = 1L;
         LocalDateTime startDate = LocalDateTime.now();
         LocalDateTime endDate = LocalDateTime.now().plusDays(30);
+        long paymentId = 1L;
 
         Subscription mockSubscription = new Subscription();
         mockSubscription.setUserId(userId);
         mockSubscription.setStartDate(startDate);
         mockSubscription.setEndDate(endDate);
+        mockSubscription.setPaymentId(paymentId);
 
         when(subscriptionRepository.save(any(Subscription.class))).thenReturn(mockSubscription);
 
-        Subscription result = enrollmentService.manageSubscription(userId, startDate, endDate);
+        Subscription result = enrollmentService.manageSubscription(userId, startDate, endDate, paymentId);
 
         assertNotNull(result);
         assertEquals(userId, result.getUserId());

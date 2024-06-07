@@ -2,6 +2,8 @@ version: '3'
 volumes:
   redis-data:
   es-data:
+  prometheus_data:  # Prometheus 데이터 볼륨
+  grafana_data:  # Grafana 데이터 볼륨
 services:
   db:
     image: mysql:8.0
@@ -56,3 +58,96 @@ services:
       - "9411:9411"
     depends_on:
       - elasticsearch
+  prometheus:
+    image: prom/prometheus:latest
+    volumes:
+      - ./prometheus/:/etc/prometheus/  # 로컬 디렉토리를 Prometheus 설정 파일 디렉토리에 매핑
+      - prometheus_data:/prometheus  # Prometheus 데이터 저장소를 볼륨으로 사용
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'  # 설정 파일 경로
+      - '--storage.tsdb.path=/prometheus'  # 데이터 저장 경로
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'  # 콘솔 라이브러리 경로
+      - '--web.console.templates=/usr/share/prometheus/consoles'  # 콘솔 템플릿 경로
+    ports:
+      - 9090:9090  # 로컬 호스트의 9090 포트를 컨테이너의 9090 포트에 매핑
+    links:
+      - cadvisor:cadvisor  # cAdvisor와 링크
+      - alertmanager:alertmanager  # Alertmanager와 링크
+    depends_on:
+      - cadvisor  # cAdvisor가 먼저 실행되도록 설정
+      # - pushgateway  # 주석 처리된 Pushgateway 종속성
+    networks:
+      - back-tier  # back-tier 네트워크에 연결
+    restart: always  # 항상 재시작
+  alertmanager:
+    image: prom/alertmanager
+    ports:
+      - 9093:9093  # 로컬 호스트의 9093 포트를 컨테이너의 9093 포트에 매핑
+    volumes:
+      - ./alertmanager/:/etc/alertmanager/  # 로컬 디렉토리를 Alertmanager 설정 파일 디렉토리에 매핑
+    networks:
+      - back-tier  # back-tier 네트워크에 연결
+    restart: always  # 항상 재시작
+    command:
+      - '--config.file=/etc/alertmanager/config.yml'  # 설정 파일 경로
+      - '--storage.path=/alertmanager'  # 저장소 경로
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro  # /proc 디렉토리를 읽기 전용으로 매핑
+      - /sys:/host/sys:ro  # /sys 디렉토리를 읽기 전용으로 매핑
+      - /:/rootfs:ro  # 루트 파일 시스템을 읽기 전용으로 매핑
+      - /:/host:ro,rslave  # 루트 파일 시스템을 읽기 전용으로 매핑 (rslave 옵션 포함)
+    command:
+      - '--path.rootfs=/host'  # rootfs 경로 설정
+      - '--path.procfs=/host/proc'  # procfs 경로 설정
+      - '--path.sysfs=/host/sys'  # sysfs 경로 설정
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"  # 무시할 마운트 포인트 패턴
+    ports:
+      - "9100:9100"  # 로컬 호스트의 9100 포트를 컨테이너의 9100 포트에 매핑
+    networks:
+      - back-tier  # back-tier 네트워크에 연결
+    restart: always  # 항상 재시작
+    deploy:
+      mode: global  # 글로벌 모드로 설정하여 클러스터의 모든 노드에서 실행
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.45.0
+    container_name: cadvisor
+    privileged: true  # privileged 모드로 실행
+    devices:
+      - /dev/kmsg:/dev/kmsg  # /dev/kmsg 디바이스 매핑
+    volumes:
+      - /var/run:/var/run:ro  # /var/run 디렉토리를 읽기 전용으로 매핑
+      - /sys:/sys:ro  # /sys 디렉토리를 읽기 전용으로 매핑
+      - /var/lib/docker/:/var/lib/docker:ro  # /var/lib/docker 디렉토리를 읽기 전용으로 매핑
+      - /var/run/docker.sock:/var/run/docker.sock:ro  # Docker 소켓을 읽기 전용으로 매핑
+      - /etc/machine-id:/etc/machine-id:ro  # /etc/machine-id 파일을 읽기 전용으로 매핑
+      - /var/lib/dbus/machine-id:/var/lib/dbus/machine-id:ro  # /var/lib/dbus/machine-id 파일을 읽기 전용으로 매핑
+    restart: unless-stopped  # 중지될 경우 다시 시작
+    expose:
+      - 8085  # 8085 포트를 노출
+    networks:
+      - back-tier  # back-tier 네트워크에 연결
+    labels:
+      org.label-schema.group: "monitoring"  # monitoring 그룹 레이블
+  grafana:
+    image: grafana/grafana
+    user: "472"  # 유저 ID 설정
+    depends_on:
+      - prometheus  # Prometheus가 먼저 실행되도록 설정
+    ports:
+      - 3000:3000  # 로컬 호스트의 3000 포트를 컨테이너의 3000 포트에 매핑
+    volumes:
+      - grafana_data:/var/lib/grafana  # Grafana 데이터 디렉토리를 매핑
+      - ./grafana/provisioning/:/etc/grafana/provisioning/  # Grafana 설정 디렉토리를 매핑
+    env_file:
+      - ./grafana/config.monitoring  # 환경 변수 파일
+    networks:
+      - back-tier  # back-tier 네트워크에 연결
+      - front-tier  # front-tier 네트워크에 연결
+    restart: always  # 항상 재시작
+
+networks:
+  back-tier:  # Prometheus 스택 내부 네트워크
+  front-tier:  # Grafana와 외부 간의 네트워크

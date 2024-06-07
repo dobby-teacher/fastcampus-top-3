@@ -51,3 +51,13 @@ scrape_configs:
 
     static_configs:
       - targets: ['node-exporter:9100']
+
+  - job_name: 'next-gateway'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:9000' ]
+
+  - job_name: 'next-discovery'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'host.docker.internal:8000' ]

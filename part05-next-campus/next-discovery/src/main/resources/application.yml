@@ -24,3 +24,16 @@ eureka:
   server:
     renewal-percent-threshold: 0 # 이 값은 분당 예상 heartbeat 를 계산하는 데 사용
     enable-self-preservation: true # 일시적인 네트워크 장애로 인한 서비스 해제 막기 위한 자기 보호 모드 (운영에서는 true 권장)
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - loggers
+          - mappings
+          - metrics
+          - shutdown
+          - prometheus

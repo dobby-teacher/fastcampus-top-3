@@ -43,6 +43,9 @@ dependencies {
 
 	implementation 'net.devh:grpc-client-spring-boot-starter:3.0.0.RELEASE'
 	implementation project(':next-grpc-common')
+
+	implementation 'io.micrometer:micrometer-tracing-bridge-brave'
+	implementation 'io.zipkin.reporter2:zipkin-reporter-brave'
 }
 
 dependencyManagement {

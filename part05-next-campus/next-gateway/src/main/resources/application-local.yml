@@ -93,6 +93,15 @@ management:
       enabled: true
     health:
       show-details: always # actuator에서 디테일한 정보들을 확인하기 위해 설정
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: b3
+      produce: b3_multi
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
 
 server:
   port: 9000

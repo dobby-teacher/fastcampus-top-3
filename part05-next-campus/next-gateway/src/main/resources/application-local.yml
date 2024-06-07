@@ -84,15 +84,6 @@ resilience4j.timelimiter:
       timeoutDuration: 5s
 
 management:
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-  endpoint:
-    shutdown:
-      enabled: true
-    health:
-      show-details: always # actuator에서 디테일한 정보들을 확인하기 위해 설정
   tracing:
     sampling:
       probability: 1.0
@@ -102,6 +93,17 @@ management:
   zipkin:
     tracing:
       endpoint: "http://localhost:9411/api/v2/spans"
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - loggers
+          - mappings
+          - metrics
+          - shutdown
+          - prometheus
 
 server:
   port: 9000

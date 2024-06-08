@@ -1,0 +1,95 @@
+classDiagram
+    User --|> UserLoginHistory : loginHistory
+    User --|> Course : teaches~instructorId
+    User --|> CourseRating : ratings~userId
+    User --|> PlaybackRecord : records~userId
+    User --|> EventLog : logs~userId
+    User --|> Payment : payments~userId
+    User --|> Enrollment : enrollments~userId
+    User --|> PlanSubscription : subscriptions~userId
+
+    Course --|> CourseSession : sessions~courseId
+    Course --|> CourseRating : ratings~courseId
+    Course --|> Enrollment : enrollments~courseId
+
+    CourseSession --|> CourseSessionFile : files~fileId
+    CourseSession --|> PlaybackRecord : records~fileId
+
+    CourseRating --|> User : user
+    CourseRating --|> Course : course
+
+    PlaybackRecord --|> EventLog : logs~recordId
+
+    Enrollment --|> Payment : payment
+    PlanSubscription --|> Payment : payment
+
+    Payment --|> User : user
+    Payment : paymentType (COURSE, SUBSCRIPTION)
+
+    class User {
+        +ID id
+        +String name
+        +String email
+    }
+
+    class UserLoginHistory {
+        +ID id
+        +String loginTime
+        +String ipAddress
+    }
+
+    class Course {
+        +ID id
+        +String title
+        +String description
+        +ID instructorId
+    }
+
+    class CourseSession {
+        +ID id
+        +String title
+    }
+
+    class CourseSessionFile {
+        +ID fileId
+        +String fileName
+        +String fileType
+        +String filePath
+    }
+
+    class CourseRating {
+        +ID id
+        +Int rating
+        +String comment
+    }
+
+    class PlaybackRecord {
+        +ID recordId
+        +String startTime
+        +String endTime
+    }
+
+    class EventLog {
+        +ID eventId
+        +String eventType
+        +String timestamp
+    }
+
+    class Payment {
+        +ID id
+        +Float amount
+        +String paymentMethod
+        +String paymentDate
+    }
+
+    class Enrollment {
+        +ID id
+        +String registrationDate
+    }
+
+    class PlanSubscription {
+        +ID id
+        +String startDate
+        +String endDate
+        +String status
+    }

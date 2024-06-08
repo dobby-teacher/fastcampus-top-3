@@ -1,0 +1,116 @@
+erDiagram
+    %% User Service
+    USERS {
+        int id PK "사용자의 고유 식별자"
+        varchar name "사용자의 전체 이름"
+        varchar email "사용자의 이메일 주소 유니크 인덱스로 중복 방지"
+        varchar password_hash "사용자의 비밀번호 해시, 보안을 위해 해싱된 값 저장"
+        datetime created_at "레코드 생성 시간"
+        datetime updated_at "레코드 갱신 시간 갱신될 때마다 시간 자동 업데이트"
+    }
+
+    USER_LOGIN_HISTORIES {
+        int id PK "로그인 기록의 고유 식별자"
+        int user_id FK "사용자 테이블의 ID를 참조, 외래키"
+        datetime login_time "로그인 시간 기본값은 현재 시간"
+        varchar ip_address "로그인한 사용자의 IP 주소, IPv6 주소도 저장 가능"
+    }
+
+    USERS ||--o{ USER_LOGIN_HISTORIES : "has"
+
+    %% Course Service
+    COURSES {
+        int course_id PK "강의의 고유 식별자"
+        varchar title "강의 제목"
+        text description "강의에 대한 자세한 설명"
+        int instructor_id FK "강사의 식별자, 외래 키로 사용될 수 있음"
+        datetime created_at "강의 생성 시간"
+    }
+
+    COURSE_SESSIONS {
+        int session_id PK "세션의 고유 식별자"
+        int course_id FK "해당 세션이 속한 강의의 ID, COURSES 테이블 참조"
+        varchar title "세션의 제목"
+    }
+
+    COURSE_RATINGS {
+        int rating_id PK "평가의 고유 식별자"
+        int course_id FK "평가가 속한 강의의 ID, COURSES 테이블 참조"
+        int user_id FK "평가를 남긴 사용자의 ID"
+        tinyint rating "사용자가 부여한 평점 (1-5)"
+        text comment "사용자가 남긴 평가 코멘트"
+        datetime created_at "레코드 생성 시간"
+    }
+
+    USERS ||--o{ COURSES : "teaches"
+    COURSES ||--o{ COURSE_SESSIONS : "contains"
+    COURSES ||--o{ COURSE_RATINGS : "rated"
+    USERS ||--o{ COURSE_RATINGS : "rates"
+
+    %% File Manage Service
+    SESSION_FILES {
+        int file_id PK "파일의 고유 식별자입니다."
+        int session_id FK "파일이 속한 세션의 식별자입니다."
+        varchar file_name "저장된 파일의 이름입니다."
+        varchar file_type "파일의 유형을 나타냅니다"
+        varchar file_path "서버 상에 파일이 저장된 경로입니다."
+        timestamp created_at "파일이 처음 생성된 날짜와 시간입니다."
+        timestamp updated_at "파일 정보가 마지막으로 업데이트된 날짜와 시간입니다."
+    }
+
+    COURSE_SESSIONS ||--o{ SESSION_FILES : "includes"
+
+    %% Playback Service
+    PLAYBACK_RECORDS {
+        int record_id PK "고유한 재생 식별자"
+        int user_id FK "사용자 식별자, users 테이블의 user_id 참조"
+        int file_id FK "재생 파일 식별자"
+        timestamp start_time "재생 시작 시간 (UNIX 타임스탬프, 밀리세컨드 단위)"
+        timestamp end_time "재생 종료 시간 (UNIX 타임스탬프, 밀리세컨드 단위)"
+    }
+
+    EVENT_LOGS {
+        int event_id PK "고유한 이벤트 로그 식별자"
+        int record_id FK "관련 재생 세션 식별자, playback_records 테이블의 record_id 참조"
+        int user_id FK "사용자 식별자, users 테이블의 user_id 참조"
+        varchar event_type "이벤트 유형 (예: 'play', 'pause', 'stop')"
+        timestamp timestamp "이벤트 발생 시간 (UNIX 타임스탬프, 밀리세컨드 단위)"
+    }
+
+    USERS ||--o{ PLAYBACK_RECORDS : "plays"
+    SESSION_FILES ||--o{ PLAYBACK_RECORDS : "played"
+    PLAYBACK_RECORDS ||--o{ EVENT_LOGS : "generates"
+    USERS ||--o{ EVENT_LOGS : "logs"
+
+    %% Enrollment and Payment Service
+    PAYMENTS {
+        int payment_id PK
+        int user_id FK "사용자 ID"
+        enum payment_type "결제 유형 ('COURSE', 'SUBSCRIPTION')"
+        decimal amount "결제 금액"
+        varchar payment_method "결제 방법"
+        timestamp payment_date "결제 일자"
+    }
+
+    ENROLLMENTS {
+        int enrollment_id PK
+        int user_id FK "사용자 ID"
+        int course_id FK "강의 ID"
+        int payment_id FK "결제 ID"
+        timestamp registration_date "등록 일자"
+    }
+
+    SUBSCRIPTIONS {
+        int subscription_id PK
+        int user_id FK "사용자 ID"
+        int payment_id FK "결제 ID"
+        timestamp start_date "시작 일자"
+        timestamp end_date "종료 일자"
+    }
+
+    USERS ||--o{ PAYMENTS : "pays"
+    PAYMENTS ||--o{ ENROLLMENTS : "covers"
+    USERS ||--o{ ENROLLMENTS : "enrolls"
+    COURSES ||--o{ ENROLLMENTS : "enrolled"
+    PAYMENTS ||--o{ SUBSCRIPTIONS : "finances"
+    USERS ||--o{ SUBSCRIPTIONS : "subscribes"

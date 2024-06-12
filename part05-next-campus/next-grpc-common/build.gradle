@@ -2,7 +2,6 @@ buildscript {
     ext {
         protobufVersion = '3.25.1'
         grpcVersion = '1.60.1'
-        protoc_platform = 'osx-x86_64'
     }
 }
 
@@ -45,7 +44,7 @@ protobuf {
             if (project.hasProperty('protoc_platform')) {
                 artifact = "com.google.protobuf:protoc:${protobufVersion}:${protoc_platform}"
             } else {
-                artifact = "com.google.protobuf:protoc:${protobufVersion}"
+                artifact = "com.google.protobuf:protoc:${protobufVersion}:osx-x86_64"
             }
         }
         plugins {
@@ -53,7 +52,7 @@ protobuf {
                 if (project.hasProperty('protoc_platform')) {
                     artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}:${protoc_platform}"
                 } else {
-                    artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+                    artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}:osx-x86_64"
                 }
             }
         }

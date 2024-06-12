@@ -45,7 +45,7 @@ public class CourseService {
         course.setTitle(title);
         course.setDescription(description);
 
-        restTemplate.put(BASE_URL + id, course);
+        restTemplate.put(BASE_URL + "/" + id, course);
         return course;
     }
 

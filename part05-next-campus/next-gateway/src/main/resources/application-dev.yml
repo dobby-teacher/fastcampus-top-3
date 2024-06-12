@@ -1,0 +1,128 @@
+spring:
+  application:
+    name: next-gateway
+  data:
+    redis:
+      port: 6379
+      host: 127.0.0.1
+  cloud:
+    gateway:
+      routes:
+        - id: auth_route
+          uri: lb://next-user-service
+          predicates:
+            - Path=/auth/**
+            - Method=POST,GET
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: authCircuitBreaker
+                fallbackUri: forward:/fallback/authFailure
+
+        - id: file_route
+          uri: lb://next-file-manage-service
+          predicates:
+            - Path=/files/**
+            - Method=POST,GET
+          filters:
+            - AuthenticationFilter
+            - RewritePath=/files/(?<segment>.*),/$\{segment}
+
+        - id: graphql_route
+          uri: lb://next-graphql
+          predicates:
+            - Path=/graphql
+            - Method=POST,GET
+          filters:
+            - AuthenticationFilter
+
+      global-cors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:9090,http://local.next-campus.com"
+            allowedMethods:
+              - POST
+              - GET
+              - PATCH
+            allowedHeaders:
+              - "*"
+            allowCredentials: true
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 1 # replenishRate는 사용자가 일정 시간 동안(보통 초 단위) 발생시킬 수 있는 요청의 수를 정의
+            redis-rate-limiter.burstCapacity: 5 # burstCapacity는 토큰 버킷이 담을 수 있는 최대 토큰의 수를 정의
+            key-resolver: "#{@ipKeyResolver}"
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8000/eureka/
+    registerWithEureka: true
+    fetchRegistry: true
+
+    rest-template-timeout:
+      connect-timeout: 5000
+      connect-request-timeout: 8000
+      socket-timeout: 10000
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+    reactor.netty: DEBUG
+    io.github.resilience4j: DEBUG
+
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      authCircuitBreaker:
+        registerHealthIndicator: true
+        slidingWindowSize: 5 # 서킷 브레이커가 고려할 최근 호출 수
+        minimumNumberOfCalls: 10 # 최소 호출 횟수, 이 수를 넘어야 서킷 브레이커의 상태가 변경됨
+        permittedNumberOfCallsInHalfOpenState: 10 # 반-열린 상태에서 허용되는 호출 수
+        automaticTransitionFromOpenToHalfOpenEnabled: true # 서킷 브레이커가 자동으로 반-열린 상태로 전환되는지 여부
+        waitDurationInOpenState: 5000 # 서킷 브레이커가 열린 상태로 유지되는 시간
+        failureRateThreshold: 50 # 실패율 기준, 이 비율을 초과하는 실패가 발생하면 서킷 브레이커가 열립니다
+        eventConsumerBufferSize: 10
+        record-exceptions:
+          - java.util.concurrent.TimeoutException
+          - org.springframework.cloud.gateway.support.NotFoundException
+          - io.github.resilience4j.circuitbreaker.CallNotPermittedException
+#        ignoreExceptions: # 서킷 브레이커가 무시할 예외 유형
+#          - org.springframework.web.client.HttpClientErrorException
+
+resilience4j.timelimiter:
+  configs:
+    default:
+      timeoutDuration: 5s
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+    propagation:
+      consume: b3
+      produce: b3_multi
+  zipkin:
+    tracing:
+      endpoint: "http://localhost:9411/api/v2/spans"
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - loggers
+          - mappings
+          - metrics
+          - shutdown
+          - prometheus
+          - circuitbreakers
+
+server:
+  port: 9000

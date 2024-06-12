@@ -146,7 +146,73 @@ services:
       - front-tier  # front-tier 네트워크에 연결
     restart: always  # 항상 재시작
 
+  next-course-service:
+    image: next-course-service:latest
+    container_name: next-course-service
+    ports:
+      - "8081:8080"
+    networks:
+      - next-campus-network
+
+  next-discovery:
+    image: next-discovery:latest
+    container_name: next-discovery
+    ports:
+      - "8082:8080"
+    networks:
+      - next-campus-network
+
+  next-enrollment-service:
+    image: next-enrollment-service:latest
+    container_name: next-enrollment-service
+    ports:
+      - "8083:8080"
+    networks:
+      - next-campus-network
+
+  next-file-manage-service:
+    image: next-file-manage-service:latest
+    container_name: next-file-manage-service
+    ports:
+      - "8084:8080"
+    networks:
+      - next-campus-network
+
+  next-gateway:
+    image: next-gateway:latest
+    container_name: next-gateway
+    ports:
+      - "8085:8080"
+    networks:
+      - next-campus-network
+
+  next-graphql:
+    image: next-graphql:latest
+    container_name: next-graphql
+    ports:
+      - "8086:8080"
+    networks:
+      - next-campus-network
+
+  next-playback-service:
+    image: next-playback-service:latest
+    container_name: next-playback-service
+    ports:
+      - "8088:8080"
+    networks:
+      - next-campus-network
+
+  next-user-service:
+    image: next-user-service:latest
+    container_name: next-user-service
+    ports:
+      - "8089:8080"
+    networks:
+      - next-campus-network
+
 networks:
   back-tier:  # Prometheus 스택 내부 네트워크
     driver: bridge
   front-tier:  # Grafana와 외부 간의 네트워크
+  next-campus-network:
+    driver: bridge

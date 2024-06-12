@@ -11,14 +11,14 @@ spring:
         enabled: true
   data:
     redis:
-      host: localhost
+      host: next-campus-redis
       port: 6379
       client-type: lettuce
 
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8000/eureka/
+      defaultZone: http://next-discovery:8000/eureka/
     registerWithEureka: true
     fetchRegistry: true
 
@@ -49,7 +49,7 @@ management:
       produce: b3_multi
   zipkin:
     tracing:
-      endpoint: "http://localhost:9411/api/v2/spans"
+      endpoint: "http://next-campus-zipkin:9411/api/v2/spans"
   endpoints:
     web:
       exposure:

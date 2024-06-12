@@ -3,7 +3,7 @@ spring:
     name: next-file-manage-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/next_files?useSSL=false&allowPublicKeyRetrieval=true
+    url: jdbc:mysql://next-campus-mysql:3306/next_files?useSSL=false&allowPublicKeyRetrieval=true
     driverClassName: com.mysql.cj.jdbc.Driver
     username: fast
     password: campus
@@ -28,7 +28,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8000/eureka/
+      defaultZone: http://next-discovery:8000/eureka/
     registerWithEureka: true
     fetchRegistry: true
 
@@ -44,7 +44,7 @@ management:
       produce: b3_multi
   zipkin:
     tracing:
-      endpoint: "http://localhost:9411/api/v2/spans"
+      endpoint: "http://next-campus-zipkin:9411/api/v2/spans"
   endpoints:
     web:
       exposure:

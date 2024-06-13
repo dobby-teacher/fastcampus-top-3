@@ -123,6 +123,3 @@ management:
           - shutdown
           - prometheus
           - circuitbreakers
-
-server:
-  port: 9000

@@ -167,24 +167,27 @@ services:
     image: next-discovery:latest
     container_name: next-discovery
     ports:
-      - "8000:8080"
+      - "8000:8000"
     networks:
       - next-campus-network
 
   next-gateway:
     image: next-gateway:latest
     container_name: next-gateway
+    depends_on:
+      - next-discovery
     ports:
       - "9000:8080"
     networks:
       - next-campus-network
-
 
   next-graphql:
     image: next-graphql:latest
     container_name: next-graphql
     ports:
       - "8080:8080"
+    depends_on:
+      - next-discovery
     networks:
       - next-campus-network
 
@@ -193,6 +196,8 @@ services:
     container_name: next-course-service
     ports:
       - "8081:8080"
+    depends_on:
+      - next-discovery
     networks:
       - next-campus-network
 
@@ -201,6 +206,9 @@ services:
     container_name: next-enrollment-service
     ports:
       - "8082:8080"
+      - "9092:9090" #grpc
+    depends_on:
+      - next-discovery
     networks:
       - next-campus-network
 
@@ -209,6 +217,10 @@ services:
     container_name: next-file-manage-service
     ports:
       - "8083:8080"
+    volumes:
+      - ./videos:/videos
+    depends_on:
+      - next-discovery
     networks:
       - next-campus-network
 
@@ -217,6 +229,9 @@ services:
     container_name: next-playback-service
     ports:
       - "8084:8080"
+      - "9094:9090" #grpc
+    depends_on:
+      - next-discovery
     networks:
       - next-campus-network
 
@@ -225,6 +240,8 @@ services:
     container_name: next-user-service
     ports:
       - "8085:8080"
+    depends_on:
+      - next-discovery
     networks:
       - next-campus-network
 

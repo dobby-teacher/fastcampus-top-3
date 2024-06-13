@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>Protocol Documentation</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Ubuntu:400,700,400italic"/>
+    <style>
+      body {
+        width: 60em;
+        margin: 1em auto;
+        color: #222;
+        font-family: "Ubuntu", sans-serif;
+        padding-bottom: 4em;
+      }
+
+      h1 {
+        font-weight: normal;
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 0.5ex;
+      }
+
+      h2 {
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 0.5ex;
+        margin: 1.5em 0;
+      }
+
+      h3 {
+        font-weight: normal;
+        border-bottom: 1px solid #aaa;
+        padding-bottom: 0.5ex;
+      }
+
+      a {
+        text-decoration: none;
+        color: #567e25;
+      }
+
+      table {
+        width: 100%;
+        font-size: 80%;
+        border-collapse: collapse;
+      }
+
+      thead {
+        font-weight: 700;
+        background-color: #dcdcdc;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #fbfbfb;
+      }
+
+      td {
+        border: 1px solid #ccc;
+        padding: 0.5ex 2ex;
+      }
+
+      td p {
+        text-indent: 1em;
+        margin: 0;
+      }
+
+      td p:nth-child(1) {
+        text-indent: 0;  
+      }
+
+       
+      .field-table td:nth-child(1) {  
+        width: 10em;
+      }
+      .field-table td:nth-child(2) {  
+        width: 10em;
+      }
+      .field-table td:nth-child(3) {  
+        width: 6em;
+      }
+      .field-table td:nth-child(4) {  
+        width: auto;
+      }
+
+       
+      .extension-table td:nth-child(1) {  
+        width: 10em;
+      }
+      .extension-table td:nth-child(2) {  
+        width: 10em;
+      }
+      .extension-table td:nth-child(3) {  
+        width: 10em;
+      }
+      .extension-table td:nth-child(4) {  
+        width: 5em;
+      }
+      .extension-table td:nth-child(5) {  
+        width: auto;
+      }
+
+       
+      .enum-table td:nth-child(1) {  
+        width: 10em;
+      }
+      .enum-table td:nth-child(2) {  
+        width: 10em;
+      }
+      .enum-table td:nth-child(3) {  
+        width: auto;
+      }
+
+       
+      .scalar-value-types-table tr {
+        height: 3em;
+      }
+
+       
+      #toc-container ul {
+        list-style-type: none;
+        padding-left: 1em;
+        line-height: 180%;
+        margin: 0;
+      }
+      #toc > li > a {
+        font-weight: bold;
+      }
+
+       
+      .file-heading {
+        width: 100%;
+        display: table;
+        border-bottom: 1px solid #aaa;
+        margin: 4em 0 1.5em 0;
+      }
+      .file-heading h2 {
+        border: none;
+        display: table-cell;
+      }
+      .file-heading a {
+        text-align: right;
+        display: table-cell;
+      }
+
+       
+      .badge {
+        width: 1.6em;
+        height: 1.6em;
+        display: inline-block;
+
+        line-height: 1.6em;
+        text-align: center;
+        font-weight: bold;
+        font-size: 60%;
+
+        color: #89ba48;
+        background-color: #dff0c8;
+
+        margin: 0.5ex 1em 0.5ex -1em;
+        border: 1px solid #fbfbfb;
+        border-radius: 1ex;
+      }
+    </style>
+
+    
+    <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+  </head>
+
+  <body>
+
+    <h1 id="title">Protocol Documentation</h1>
+
+    <h2>Table of Contents</h2>
+
+    <div id="toc-container">
+      <ul id="toc">
+        
+          
+          <li>
+            <a href="#enrollment_service.proto">enrollment_service.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.CourseAccessRequest"><span class="badge">M</span>CourseAccessRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.CourseAccessResponse"><span class="badge">M</span>CourseAccessResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.CourseRegistrationRequest"><span class="badge">M</span>CourseRegistrationRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.CourseRegistrationResponse"><span class="badge">M</span>CourseRegistrationResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.Enrollment"><span class="badge">M</span>Enrollment</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentRequest"><span class="badge">M</span>PaymentRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentResponse"><span class="badge">M</span>PaymentResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentsByIdRequest"><span class="badge">M</span>PaymentsByIdRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentsByIdResponse"><span class="badge">M</span>PaymentsByIdResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.RenewSubscriptionRequest"><span class="badge">M</span>RenewSubscriptionRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.Subscription"><span class="badge">M</span>Subscription</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.SubscriptionAccessRequest"><span class="badge">M</span>SubscriptionAccessRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.SubscriptionAccessResponse"><span class="badge">M</span>SubscriptionAccessResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.SubscriptionRequest"><span class="badge">M</span>SubscriptionRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.SubscriptionResponse"><span class="badge">M</span>SubscriptionResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.UserEnrollmentsRequest"><span class="badge">M</span>UserEnrollmentsRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.UserEnrollmentsResponse"><span class="badge">M</span>UserEnrollmentsResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.UserPaymentsRequest"><span class="badge">M</span>UserPaymentsRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.UserPaymentsResponse"><span class="badge">M</span>UserPaymentsResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.UserSubscriptionsRequest"><span class="badge">M</span>UserSubscriptionsRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.UserSubscriptionsResponse"><span class="badge">M</span>UserSubscriptionsResponse</a>
+                </li>
+              
+              
+              
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.EnrollmentService"><span class="badge">S</span>EnrollmentService</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextenrollmentservice.domain.service.FakePaymentService"><span class="badge">S</span>FakePaymentService</a>
+                </li>
+              
+            </ul>
+          </li>
+        
+          
+          <li>
+            <a href="#playback_service.proto">playback_service.proto</a>
+            <ul>
+              
+                <li>
+                  <a href="#com.fastcampus.nextplaybackservice.domain.service.EndRecordRequest"><span class="badge">M</span>EndRecordRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextplaybackservice.domain.service.EndRecordResponse"><span class="badge">M</span>EndRecordResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextplaybackservice.domain.service.EventLog"><span class="badge">M</span>EventLog</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextplaybackservice.domain.service.LogEventRequest"><span class="badge">M</span>LogEventRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextplaybackservice.domain.service.LogEventResponse"><span class="badge">M</span>LogEventResponse</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextplaybackservice.domain.service.PlaybackRecord"><span class="badge">M</span>PlaybackRecord</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextplaybackservice.domain.service.StartRecordRequest"><span class="badge">M</span>StartRecordRequest</a>
+                </li>
+              
+                <li>
+                  <a href="#com.fastcampus.nextplaybackservice.domain.service.StartRecordResponse"><span class="badge">M</span>StartRecordResponse</a>
+                </li>
+              
+              
+              
+              
+                <li>
+                  <a href="#com.fastcampus.nextplaybackservice.domain.service.PlaybackService"><span class="badge">S</span>PlaybackService</a>
+                </li>
+              
+            </ul>
+          </li>
+        
+        <li><a href="#scalar-value-types">Scalar Value Types</a></li>
+      </ul>
+    </div>
+
+    
+      
+      <div class="file-heading">
+        <h2 id="enrollment_service.proto">enrollment_service.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.CourseAccessRequest">CourseAccessRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>course_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>강의 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.CourseAccessResponse">CourseAccessResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>course_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>강의 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>has_access</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>접근 권한 여부 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.CourseRegistrationRequest">CourseRegistrationRequest</h3>
+        <p>EnrollmentService에 대한 요청 및 응답 메시지 정의</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>course_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>강의 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>payment_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>결제 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.CourseRegistrationResponse">CourseRegistrationResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>course_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>강의 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>registration_date</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>등록 날짜 (Unix 타임스탬프) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.Enrollment">Enrollment</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>enrollment_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>등록 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>course_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>강의 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>registration_date</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>등록 날짜 (Unix 타임스탬프) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>status</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>등록 상태 (예: Active, Completed) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>payment_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>결제 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.PaymentRequest">PaymentRequest</h3>
+        <p>FakePaymentService에 대한 요청 및 응답 메시지 정의</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>type</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>결제 유형 (&#34;COURSE&#34; 또는 &#34;SUBSCRIPTION&#34;) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>amount</td>
+                  <td><a href="#double">double</a></td>
+                  <td></td>
+                  <td><p>결제 금액 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>payment_method</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>결제 방법 (예: &#34;CARD&#34;) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.PaymentResponse">PaymentResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>type</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>결제 유형 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>amount</td>
+                  <td><a href="#double">double</a></td>
+                  <td></td>
+                  <td><p>결제 금액 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>payment_method</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>결제 방법 </p></td>
+                </tr>
+              
+                <tr>
+                  <td>payment_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>결제 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>payment_date</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>결제 날짜 (Unix 타임스탬프) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>payment_successful</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>결제 성공 여부 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.PaymentsByIdRequest">PaymentsByIdRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>payment_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>결제 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.PaymentsByIdResponse">PaymentsByIdResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>payment</td>
+                  <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentResponse">PaymentResponse</a></td>
+                  <td></td>
+                  <td><p>결제 정보 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.RenewSubscriptionRequest">RenewSubscriptionRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>subscription_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>구독 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>start_date</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>시작 날짜 (Unix 타임스탬프) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>end_date</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>종료 날짜 (Unix 타임스탬프) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.Subscription">Subscription</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>subscription_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>구독 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>start_date</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>시작 날짜 (Unix 타임스탬프) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>end_date</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>종료 날짜 (Unix 타임스탬프) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>status</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>구독 상태 (예: Active, Expired) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>payment_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>결제 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.SubscriptionAccessRequest">SubscriptionAccessRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.SubscriptionAccessResponse">SubscriptionAccessResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>subscription_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>구독 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>has_access</td>
+                  <td><a href="#bool">bool</a></td>
+                  <td></td>
+                  <td><p>접근 권한 여부 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.SubscriptionRequest">SubscriptionRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>start_date</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>시작 날짜 (Unix 타임스탬프) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>end_date</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>종료 날짜 (Unix 타임스탬프) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>payment_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>결제 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.SubscriptionResponse">SubscriptionResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>subscription</td>
+                  <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.Subscription">Subscription</a></td>
+                  <td></td>
+                  <td><p>구독 정보 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.UserEnrollmentsRequest">UserEnrollmentsRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.UserEnrollmentsResponse">UserEnrollmentsResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>enrollments</td>
+                  <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.Enrollment">Enrollment</a></td>
+                  <td>repeated</td>
+                  <td><p>사용자의 모든 강의 등록 내역 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.UserPaymentsRequest">UserPaymentsRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.UserPaymentsResponse">UserPaymentsResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>payments</td>
+                  <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentResponse">PaymentResponse</a></td>
+                  <td>repeated</td>
+                  <td><p>사용자의 모든 결제 내역 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.UserSubscriptionsRequest">UserSubscriptionsRequest</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.UserSubscriptionsResponse">UserSubscriptionsResponse</h3>
+        <p></p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>subscriptions</td>
+                  <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.Subscription">Subscription</a></td>
+                  <td>repeated</td>
+                  <td><p>사용자의 모든 구독 내역 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+
+      
+
+      
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.EnrollmentService">EnrollmentService</h3>
+        <p>EnrollmentService는 강의 등록 및 구독 관리 서비스를 제공합니다.</p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>RegisterCourse</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.CourseRegistrationRequest">CourseRegistrationRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.CourseRegistrationResponse">CourseRegistrationResponse</a></td>
+                <td><p>RegisterCourse는 새로운 강의 등록 요청을 처리합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>ManageSubscription</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.SubscriptionRequest">SubscriptionRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.SubscriptionResponse">SubscriptionResponse</a></td>
+                <td><p>ManageSubscription는 사용자의 새로운 구독을 등록하는 요청을 처리합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>RenewSubscription</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.RenewSubscriptionRequest">RenewSubscriptionRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.SubscriptionResponse">SubscriptionResponse</a></td>
+                <td><p>RenewSubscription은 기존 구독을 갱신하는 요청을 처리합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>CheckCourseAccess</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.CourseAccessRequest">CourseAccessRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.CourseAccessResponse">CourseAccessResponse</a></td>
+                <td><p>CheckCourseAccess는 특정 사용자가 특정 강의에 접근할 수 있는지 확인합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>CheckSubscriptionAccess</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.SubscriptionAccessRequest">SubscriptionAccessRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.SubscriptionAccessResponse">SubscriptionAccessResponse</a></td>
+                <td><p>CheckSubscriptionAccess는 특정 사용자가 특정 구독에 접근할 수 있는지 확인합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>GetUserEnrollments</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.UserEnrollmentsRequest">UserEnrollmentsRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.UserEnrollmentsResponse">UserEnrollmentsResponse</a></td>
+                <td><p>GetUserEnrollments는 특정 사용자의 모든 강의 등록 내역을 조회합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>GetUserPlanSubscriptions</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.UserSubscriptionsRequest">UserSubscriptionsRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.UserSubscriptionsResponse">UserSubscriptionsResponse</a></td>
+                <td><p>GetUserPlanSubscriptions는 특정 사용자의 모든 구독 내역을 조회합니다.</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+        <h3 id="com.fastcampus.nextenrollmentservice.domain.service.FakePaymentService">FakePaymentService</h3>
+        <p>FakePaymentService는 결제 관련 시뮬레이션 서비스를 제공합니다.</p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>CreatePayment</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentRequest">PaymentRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentResponse">PaymentResponse</a></td>
+                <td><p>CreatePayment는 결제 거래 생성을 시뮬레이션합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>ListUserPayments</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.UserPaymentsRequest">UserPaymentsRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.UserPaymentsResponse">UserPaymentsResponse</a></td>
+                <td><p>ListUserPayments는 특정 사용자의 모든 결제 내역을 조회합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>GetPaymentsByPaymentId</td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentsByIdRequest">PaymentsByIdRequest</a></td>
+                <td><a href="#com.fastcampus.nextenrollmentservice.domain.service.PaymentsByIdResponse">PaymentsByIdResponse</a></td>
+                <td><p>GetPaymentsByPaymentId는 특정 결제 ID에 해당하는 결제 내역을 조회합니다.</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+    
+      
+      <div class="file-heading">
+        <h2 id="playback_service.proto">playback_service.proto</h2><a href="#title">Top</a>
+      </div>
+      <p></p>
+
+      
+        <h3 id="com.fastcampus.nextplaybackservice.domain.service.EndRecordRequest">EndRecordRequest</h3>
+        <p>재생 기록 종료 요청 메시지</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>record_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>재생 기록 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextplaybackservice.domain.service.EndRecordResponse">EndRecordResponse</h3>
+        <p>재생 기록 종료 응답 메시지</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>record</td>
+                  <td><a href="#com.fastcampus.nextplaybackservice.domain.service.PlaybackRecord">PlaybackRecord</a></td>
+                  <td></td>
+                  <td><p>종료된 재생 기록 정보 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextplaybackservice.domain.service.EventLog">EventLog</h3>
+        <p>이벤트 로그 정보</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>event_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>이벤트 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>record_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>관련 재생 세션 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>event_type</td>
+                  <td><a href="#string">string</a></td>
+                  <td></td>
+                  <td><p>이벤트 유형 (예: &#39;play&#39;, &#39;pause&#39;, &#39;stop&#39;) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>timestamp</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>이벤트 발생 시간 (UNIX 타임스탬프) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextplaybackservice.domain.service.LogEventRequest">LogEventRequest</h3>
+        <p>이벤트 로깅 요청 메시지</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>event</td>
+                  <td><a href="#com.fastcampus.nextplaybackservice.domain.service.EventLog">EventLog</a></td>
+                  <td></td>
+                  <td><p>로깅할 이벤트 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextplaybackservice.domain.service.LogEventResponse">LogEventResponse</h3>
+        <p>이벤트 로깅 응답 메시지</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>event</td>
+                  <td><a href="#com.fastcampus.nextplaybackservice.domain.service.EventLog">EventLog</a></td>
+                  <td></td>
+                  <td><p>로깅된 이벤트 정보 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextplaybackservice.domain.service.PlaybackRecord">PlaybackRecord</h3>
+        <p>재생 기록 정보</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>record_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>재생 기록 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>file_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>파일 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>start_time</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>시작 시간 (UNIX 타임스탬프) </p></td>
+                </tr>
+              
+                <tr>
+                  <td>end_time</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>종료 시간 (UNIX 타임스탬프) </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextplaybackservice.domain.service.StartRecordRequest">StartRecordRequest</h3>
+        <p>재생 기록 시작 요청 메시지</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>user_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>사용자 ID </p></td>
+                </tr>
+              
+                <tr>
+                  <td>file_id</td>
+                  <td><a href="#int64">int64</a></td>
+                  <td></td>
+                  <td><p>파일 ID </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+        <h3 id="com.fastcampus.nextplaybackservice.domain.service.StartRecordResponse">StartRecordResponse</h3>
+        <p>재생 기록 시작 응답 메시지</p>
+
+        
+          <table class="field-table">
+            <thead>
+              <tr><td>Field</td><td>Type</td><td>Label</td><td>Description</td></tr>
+            </thead>
+            <tbody>
+              
+                <tr>
+                  <td>record</td>
+                  <td><a href="#com.fastcampus.nextplaybackservice.domain.service.PlaybackRecord">PlaybackRecord</a></td>
+                  <td></td>
+                  <td><p>시작된 재생 기록 정보 </p></td>
+                </tr>
+              
+            </tbody>
+          </table>
+
+          
+
+        
+      
+
+      
+
+      
+
+      
+        <h3 id="com.fastcampus.nextplaybackservice.domain.service.PlaybackService">PlaybackService</h3>
+        <p>PlaybackService는 미디어 재생 기록 및 이벤트 로깅 서비스를 제공합니다.</p>
+        <table class="enum-table">
+          <thead>
+            <tr><td>Method Name</td><td>Request Type</td><td>Response Type</td><td>Description</td></tr>
+          </thead>
+          <tbody>
+            
+              <tr>
+                <td>StartRecord</td>
+                <td><a href="#com.fastcampus.nextplaybackservice.domain.service.StartRecordRequest">StartRecordRequest</a></td>
+                <td><a href="#com.fastcampus.nextplaybackservice.domain.service.StartRecordResponse">StartRecordResponse</a></td>
+                <td><p>StartRecord는 새로운 재생 기록을 시작합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>EndRecord</td>
+                <td><a href="#com.fastcampus.nextplaybackservice.domain.service.EndRecordRequest">EndRecordRequest</a></td>
+                <td><a href="#com.fastcampus.nextplaybackservice.domain.service.EndRecordResponse">EndRecordResponse</a></td>
+                <td><p>EndRecord는 재생 기록을 종료합니다.</p></td>
+              </tr>
+            
+              <tr>
+                <td>LogEvent</td>
+                <td><a href="#com.fastcampus.nextplaybackservice.domain.service.LogEventRequest">LogEventRequest</a></td>
+                <td><a href="#com.fastcampus.nextplaybackservice.domain.service.LogEventResponse">LogEventResponse</a></td>
+                <td><p>LogEvent는 재생 중 발생한 이벤트를 로깅합니다.</p></td>
+              </tr>
+            
+          </tbody>
+        </table>
+
+        
+    
+
+    <h2 id="scalar-value-types">Scalar Value Types</h2>
+    <table class="scalar-value-types-table">
+      <thead>
+        <tr><td>.proto Type</td><td>Notes</td><td>C++</td><td>Java</td><td>Python</td><td>Go</td><td>C#</td><td>PHP</td><td>Ruby</td></tr>
+      </thead>
+      <tbody>
+        
+          <tr id="double">
+            <td>double</td>
+            <td></td>
+            <td>double</td>
+            <td>double</td>
+            <td>float</td>
+            <td>float64</td>
+            <td>double</td>
+            <td>float</td>
+            <td>Float</td>
+          </tr>
+        
+          <tr id="float">
+            <td>float</td>
+            <td></td>
+            <td>float</td>
+            <td>float</td>
+            <td>float</td>
+            <td>float32</td>
+            <td>float</td>
+            <td>float</td>
+            <td>Float</td>
+          </tr>
+        
+          <tr id="int32">
+            <td>int32</td>
+            <td>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint32 instead.</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>int</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="int64">
+            <td>int64</td>
+            <td>Uses variable-length encoding. Inefficient for encoding negative numbers – if your field is likely to have negative values, use sint64 instead.</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>integer/string</td>
+            <td>Bignum</td>
+          </tr>
+        
+          <tr id="uint32">
+            <td>uint32</td>
+            <td>Uses variable-length encoding.</td>
+            <td>uint32</td>
+            <td>int</td>
+            <td>int/long</td>
+            <td>uint32</td>
+            <td>uint</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="uint64">
+            <td>uint64</td>
+            <td>Uses variable-length encoding.</td>
+            <td>uint64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>uint64</td>
+            <td>ulong</td>
+            <td>integer/string</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="sint32">
+            <td>sint32</td>
+            <td>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int32s.</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>int</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="sint64">
+            <td>sint64</td>
+            <td>Uses variable-length encoding. Signed int value. These more efficiently encode negative numbers than regular int64s.</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>integer/string</td>
+            <td>Bignum</td>
+          </tr>
+        
+          <tr id="fixed32">
+            <td>fixed32</td>
+            <td>Always four bytes. More efficient than uint32 if values are often greater than 2^28.</td>
+            <td>uint32</td>
+            <td>int</td>
+            <td>int</td>
+            <td>uint32</td>
+            <td>uint</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="fixed64">
+            <td>fixed64</td>
+            <td>Always eight bytes. More efficient than uint64 if values are often greater than 2^56.</td>
+            <td>uint64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>uint64</td>
+            <td>ulong</td>
+            <td>integer/string</td>
+            <td>Bignum</td>
+          </tr>
+        
+          <tr id="sfixed32">
+            <td>sfixed32</td>
+            <td>Always four bytes.</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>int</td>
+            <td>int32</td>
+            <td>int</td>
+            <td>integer</td>
+            <td>Bignum or Fixnum (as required)</td>
+          </tr>
+        
+          <tr id="sfixed64">
+            <td>sfixed64</td>
+            <td>Always eight bytes.</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>int/long</td>
+            <td>int64</td>
+            <td>long</td>
+            <td>integer/string</td>
+            <td>Bignum</td>
+          </tr>
+        
+          <tr id="bool">
+            <td>bool</td>
+            <td></td>
+            <td>bool</td>
+            <td>boolean</td>
+            <td>boolean</td>
+            <td>bool</td>
+            <td>bool</td>
+            <td>boolean</td>
+            <td>TrueClass/FalseClass</td>
+          </tr>
+        
+          <tr id="string">
+            <td>string</td>
+            <td>A string must always contain UTF-8 encoded or 7-bit ASCII text.</td>
+            <td>string</td>
+            <td>String</td>
+            <td>str/unicode</td>
+            <td>string</td>
+            <td>string</td>
+            <td>string</td>
+            <td>String (UTF-8)</td>
+          </tr>
+        
+          <tr id="bytes">
+            <td>bytes</td>
+            <td>May contain any arbitrary sequence of bytes.</td>
+            <td>string</td>
+            <td>ByteString</td>
+            <td>str</td>
+            <td>[]byte</td>
+            <td>ByteString</td>
+            <td>string</td>
+            <td>String (ASCII-8BIT)</td>
+          </tr>
+        
+      </tbody>
+    </table>
+  </body>
+</html>
+

@@ -2,6 +2,7 @@ syntax = "proto3";
 
 package com.fastcampus.nextenrollmentservice.domain.service;
 
+// EnrollmentService는 강의 등록 및 구독 관리 서비스를 제공합니다.
 service EnrollmentService {
   // RegisterCourse는 새로운 강의 등록 요청을 처리합니다.
   rpc RegisterCourse(CourseRegistrationRequest) returns (CourseRegistrationResponse);
@@ -18,131 +19,138 @@ service EnrollmentService {
   // CheckSubscriptionAccess는 특정 사용자가 특정 구독에 접근할 수 있는지 확인합니다.
   rpc CheckSubscriptionAccess(SubscriptionAccessRequest) returns (SubscriptionAccessResponse);
 
+  // GetUserEnrollments는 특정 사용자의 모든 강의 등록 내역을 조회합니다.
   rpc GetUserEnrollments(UserEnrollmentsRequest) returns (UserEnrollmentsResponse);
+
+  // GetUserPlanSubscriptions는 특정 사용자의 모든 구독 내역을 조회합니다.
   rpc GetUserPlanSubscriptions(UserSubscriptionsRequest) returns (UserSubscriptionsResponse);
 }
 
+// FakePaymentService는 결제 관련 시뮬레이션 서비스를 제공합니다.
 service FakePaymentService {
   // CreatePayment는 결제 거래 생성을 시뮬레이션합니다.
   rpc CreatePayment(PaymentRequest) returns (PaymentResponse);
+
+  // ListUserPayments는 특정 사용자의 모든 결제 내역을 조회합니다.
   rpc ListUserPayments(UserPaymentsRequest) returns (UserPaymentsResponse);
+
+  // GetPaymentsByPaymentId는 특정 결제 ID에 해당하는 결제 내역을 조회합니다.
   rpc GetPaymentsByPaymentId(PaymentsByIdRequest) returns (PaymentsByIdResponse);
 }
 
-// Requests and responses for the EnrollmentService
+// EnrollmentService에 대한 요청 및 응답 메시지 정의
 message CourseRegistrationRequest {
-  int64 user_id = 1;
-  int64 course_id = 2;
-  int64 payment_id = 3;
+  int64 user_id = 1; // 사용자 ID
+  int64 course_id = 2; // 강의 ID
+  int64 payment_id = 3; // 결제 ID
 }
 
 message CourseRegistrationResponse {
-  int64 course_id = 1;
-  int64 user_id = 2;
-  int64 registration_date = 3; // Unix timestamp
+  int64 course_id = 1; // 강의 ID
+  int64 user_id = 2; // 사용자 ID
+  int64 registration_date = 3; // 등록 날짜 (Unix 타임스탬프)
 }
 
 message SubscriptionRequest {
-  int64 user_id = 1;
-  int64 start_date = 2; // Unix timestamp
-  int64 end_date = 3; // Unix timestamp
-  int64 payment_id = 4;
+  int64 user_id = 1; // 사용자 ID
+  int64 start_date = 2; // 시작 날짜 (Unix 타임스탬프)
+  int64 end_date = 3; // 종료 날짜 (Unix 타임스탬프)
+  int64 payment_id = 4; // 결제 ID
 }
 
 message RenewSubscriptionRequest {
-  int64 subscription_id = 1;
-  int64 start_date = 2; // Unix timestamp
-  int64 end_date = 3; // Unix timestamp
+  int64 subscription_id = 1; // 구독 ID
+  int64 start_date = 2; // 시작 날짜 (Unix 타임스탬프)
+  int64 end_date = 3; // 종료 날짜 (Unix 타임스탬프)
 }
 
 message SubscriptionResponse {
-  Subscription subscription = 1;
+  Subscription subscription = 1; // 구독 정보
 }
 
 message CourseAccessRequest {
-  int64 course_id = 1;
-  int64 user_id = 2;
+  int64 course_id = 1; // 강의 ID
+  int64 user_id = 2; // 사용자 ID
 }
 
 message CourseAccessResponse {
-  int64 course_id = 1;
-  bool has_access = 2;
+  int64 course_id = 1; // 강의 ID
+  bool has_access = 2; // 접근 권한 여부
 }
 
 message SubscriptionAccessRequest {
-  int64 user_id = 1;
+  int64 user_id = 1; // 사용자 ID
 }
 
 message SubscriptionAccessResponse {
-  int64 subscription_id = 1;
-  bool has_access = 2;
-}
-
-// Requests and responses for the FakePaymentService
-message PaymentRequest {
-  int64 user_id = 1;
-  string type = 2; // "COURSE" or "SUBSCRIPTION"
-  double amount = 3;
-  string payment_method = 4; // E.g., "CARD"
-}
-
-message PaymentResponse {
-  int64 user_id = 1;
-  string type = 2;
-  double amount = 3;
-  string payment_method = 4;
-  int64 payment_id = 5;
-  int64 payment_date = 6;
-
-  bool payment_successful = 100;
-}
-
-message UserPaymentsRequest {
-  int64 user_id = 1;
-}
-
-message PaymentsByIdRequest {
-  int64 payment_id = 1;
-}
-
-message PaymentsByIdResponse {
-  PaymentResponse payment = 1;
-}
-
-message UserPaymentsResponse {
-  repeated PaymentResponse payments = 1;
+  int64 subscription_id = 1; // 구독 ID
+  bool has_access = 2; // 접근 권한 여부
 }
 
 message UserEnrollmentsRequest {
-  int64 user_id = 1;
+  int64 user_id = 1; // 사용자 ID
 }
 
 message UserEnrollmentsResponse {
-  repeated Enrollment enrollments = 1;
+  repeated Enrollment enrollments = 1; // 사용자의 모든 강의 등록 내역
 }
 
 message Enrollment {
-  int64 enrollment_id = 1;
-  int64 user_id = 2;
-  int64 course_id = 3;
-  int64 registration_date = 4; // Unix timestamp
-  string status = 5; // Active, Completed, etc.
-  int64 payment_id = 6;
+  int64 enrollment_id = 1; // 등록 ID
+  int64 user_id = 2; // 사용자 ID
+  int64 course_id = 3; // 강의 ID
+  int64 registration_date = 4; // 등록 날짜 (Unix 타임스탬프)
+  string status = 5; // 등록 상태 (예: Active, Completed)
+  int64 payment_id = 6; // 결제 ID
 }
 
 message UserSubscriptionsRequest {
-  int64 user_id = 1;
+  int64 user_id = 1; // 사용자 ID
 }
 
 message UserSubscriptionsResponse {
-  repeated Subscription subscriptions = 1;
+  repeated Subscription subscriptions = 1; // 사용자의 모든 구독 내역
 }
 
 message Subscription {
-  int64 subscription_id = 1;
-  int64 user_id = 2;
-  int64 start_date = 3; // Unix timestamp
-  int64 end_date = 4; // Unix timestamp
-  string status = 5; // Active, Expired, etc.
-  int64 payment_id = 6;
+  int64 subscription_id = 1; // 구독 ID
+  int64 user_id = 2; // 사용자 ID
+  int64 start_date = 3; // 시작 날짜 (Unix 타임스탬프)
+  int64 end_date = 4; // 종료 날짜 (Unix 타임스탬프)
+  string status = 5; // 구독 상태 (예: Active, Expired)
+  int64 payment_id = 6; // 결제 ID
+}
+
+// FakePaymentService에 대한 요청 및 응답 메시지 정의
+message PaymentRequest {
+  int64 user_id = 1; // 사용자 ID
+  string type = 2; // 결제 유형 ("COURSE" 또는 "SUBSCRIPTION")
+  double amount = 3; // 결제 금액
+  string payment_method = 4; // 결제 방법 (예: "CARD")
+}
+
+message PaymentResponse {
+  int64 user_id = 1; // 사용자 ID
+  string type = 2; // 결제 유형
+  double amount = 3; // 결제 금액
+  string payment_method = 4; // 결제 방법
+  int64 payment_id = 5; // 결제 ID
+  int64 payment_date = 6; // 결제 날짜 (Unix 타임스탬프)
+  bool payment_successful = 100; // 결제 성공 여부
+}
+
+message UserPaymentsRequest {
+  int64 user_id = 1; // 사용자 ID
+}
+
+message PaymentsByIdRequest {
+  int64 payment_id = 1; // 결제 ID
+}
+
+message PaymentsByIdResponse {
+  PaymentResponse payment = 1; // 결제 정보
+}
+
+message UserPaymentsResponse {
+  repeated PaymentResponse payments = 1; // 사용자의 모든 결제 내역
 }

@@ -2,12 +2,19 @@ syntax = "proto3";
 
 package com.fastcampus.nextplaybackservice.domain.service;
 
+// PlaybackService는 미디어 재생 기록 및 이벤트 로깅 서비스를 제공합니다.
 service PlaybackService {
+  // StartRecord는 새로운 재생 기록을 시작합니다.
   rpc StartRecord(StartRecordRequest) returns (StartRecordResponse);
+
+  // EndRecord는 재생 기록을 종료합니다.
   rpc EndRecord(EndRecordRequest) returns (EndRecordResponse);
+
+  // LogEvent는 재생 중 발생한 이벤트를 로깅합니다.
   rpc LogEvent(LogEventRequest) returns (LogEventResponse);
 }
 
+// 재생 기록 정보
 message PlaybackRecord {
   int64 record_id = 1;  // 재생 기록 ID
   int64 user_id = 2;    // 사용자 ID
@@ -16,6 +23,7 @@ message PlaybackRecord {
   int64 end_time = 5;    // 종료 시간 (UNIX 타임스탬프)
 }
 
+// 이벤트 로그 정보
 message EventLog {
   int64 event_id = 1;     // 이벤트 ID
   int64 record_id = 2;   // 관련 재생 세션 ID

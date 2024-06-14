@@ -5,6 +5,9 @@
         <v-card>
           <v-card-title>Purchase Course</v-card-title>
           <v-card-text v-if="loading">Loading...</v-card-text>
+          <v-card-text v-else-if="error">
+            <v-alert type="error">Error loading course details: {{ error.message }}</v-alert>
+          </v-card-text>
           <v-card-text v-else>
             <div v-if="course">
               <h2>{{ course.title }}</h2>
@@ -15,7 +18,6 @@
                 <v-btn type="submit" color="primary">Purchase</v-btn>
               </v-form>
             </div>
-            <v-alert v-if="error" type="error">Error loading course details.</v-alert>
           </v-card-text>
         </v-card>
       </v-col>
@@ -24,10 +26,10 @@
 </template>
 
 <script>
-import {useQuery, useMutation} from '@vue/apollo-composable';
+import { useQuery, useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
-import {ref} from 'vue';
-import {useRoute} from 'vue-router';
+import { ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 const GET_COURSE = gql`
   query GetCourse($userId: ID!, $courseId: ID!) {
@@ -64,17 +66,17 @@ export default {
       courseId: courseId.value,
     });
 
-    const [purchaseCourseMutation] = useMutation(PURCHASE_COURSE);
+    const course = computed(() => result.value?.getCourse);
+
+    const { mutate: purchaseCourseMutation } = useMutation(PURCHASE_COURSE);
 
     const purchaseCourse = async () => {
       try {
         await purchaseCourseMutation({
-          variables: {
-            userId: userId.value,
-            courseId: courseId.value,
-            amount: parseFloat(amount.value),
-            paymentMethod: paymentMethod.value,
-          },
+          userId: userId.value,
+          courseId: courseId.value,
+          amount: parseFloat(amount.value),
+          paymentMethod: paymentMethod.value,
         });
         alert('Course purchased successfully!');
       } catch (e) {
@@ -84,7 +86,7 @@ export default {
     };
 
     return {
-      course: result,
+      course,
       loading,
       error,
       paymentMethod,

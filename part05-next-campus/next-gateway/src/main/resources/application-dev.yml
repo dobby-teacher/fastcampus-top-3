@@ -12,7 +12,7 @@ spring:
           uri: lb://next-user-service
           predicates:
             - Path=/auth/**
-            - Method=POST,GET
+            - Method=POST,GET,OPTIONS
           filters:
             - name: CircuitBreaker
               args:
@@ -23,7 +23,7 @@ spring:
           uri: lb://next-file-manage-service
           predicates:
             - Path=/files/**
-            - Method=POST,GET
+            - Method=POST,GET,OPTIONS
           filters:
             - AuthenticationFilter
             - RewritePath=/files/(?<segment>.*),/$\{segment}
@@ -32,20 +32,20 @@ spring:
           uri: lb://next-graphql
           predicates:
             - Path=/graphql
-            - Method=POST,GET
+            - Method=POST,GET,OPTIONS
           filters:
             - AuthenticationFilter
 
       global-cors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:9090,http://local.next-campus.com"
+            allowedOrigins: "http://localhost:9999"
             allowedMethods:
+              - OPTIONS
               - POST
               - GET
               - PATCH
-            allowedHeaders:
-              - "*"
+            allowedHeaders: "*"
             allowCredentials: true
 
       default-filters:
@@ -110,7 +110,7 @@ management:
       produce: b3_multi
   zipkin:
     tracing:
-      endpoint: "http://next-gateway:9411/api/v2/spans"
+      endpoint: "http://next-campus-zipkin:9411/api/v2/spans"
   endpoints:
     web:
       exposure:

@@ -2,6 +2,12 @@ package com.fastcampus.nextfilemanageservice.domain.controller;
 
 import com.fastcampus.nextfilemanageservice.domain.entity.SessionFile;
 import com.fastcampus.nextfilemanageservice.domain.service.SessionFileService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.InputStreamResource;
@@ -26,7 +32,18 @@ public class VideoStreamingController {
     private final SessionFileService sessionFileService;
 
     @GetMapping("/streams")
-    public ResponseEntity<?> streamVideo(HttpServletRequest request, @PathVariable Long sessionId) {
+    @Operation(summary = "세션 비디오 스트리밍", description = "지정된 세션의 비디오 파일을 스트리밍합니다.", responses = {
+            @ApiResponse(responseCode = "200", description = "성공적으로 비디오 스트리밍 시작", content = @Content(mediaType = "video/mp4")),
+            @ApiResponse(responseCode = "206", description = "부분 비디오 스트리밍 시작", content = @Content(mediaType = "video/mp4")),
+            @ApiResponse(responseCode = "404", description = "비디오 파일을 찾을 수 없음"),
+            @ApiResponse(responseCode = "416", description = "잘못된 범위 요청"),
+            @ApiResponse(responseCode = "500", description = "서버 내부 오류")
+    })
+    public ResponseEntity<?> streamVideo(
+            @Parameter(description = "비디오를 스트리밍할 세션의 ID", required = true)
+            @PathVariable Long sessionId,
+            @Parameter(description = "HTTP 요청 객체", hidden = true)
+            HttpServletRequest request) {
         Optional<SessionFile> fileOptional = sessionFileService.findTopBySessionIdOrderByFileIdDesc(sessionId);
 
         return fileOptional.map(file -> {
@@ -67,10 +84,10 @@ public class VideoStreamingController {
                             .body(resource);
 
                 } else {
-                    throw new RuntimeException("Could not read file: " + file.getFileName());
+                    throw new RuntimeException("파일을 읽을 수 없습니다: " + file.getFileName());
                 }
             } catch (IOException e) {
-                return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
+                return ResponseEntity.internalServerError().body("오류: " + e.getMessage());
             }
         }).orElseGet(() -> ResponseEntity.notFound().build());
     }

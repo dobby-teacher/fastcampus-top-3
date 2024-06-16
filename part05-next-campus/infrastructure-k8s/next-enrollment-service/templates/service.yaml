@@ -11,9 +11,9 @@ spec:
       targetPort: 8080
       protocol: TCP
       name: http
-    - port: { { .Values.service.grpcPort } }
-      targetPort: 8080
+    - port: {{ .Values.service.grpcPort }}
+      targetPort: 9090
       protocol: TCP
-      name: http
+      name: grpc
   selector:
     app: next-enrollment-service

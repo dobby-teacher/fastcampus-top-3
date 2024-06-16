@@ -1,0 +1,18 @@
+replicaCount: 1
+
+image:
+  repository: next-gateway
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 9000
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 512Mi
+  requests:
+    cpu: 500m
+    memory: 512Mi

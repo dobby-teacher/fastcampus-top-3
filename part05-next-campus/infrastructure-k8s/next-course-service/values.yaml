@@ -1,7 +1,7 @@
 replicaCount: 1
 
 image:
-  repository: next-gateway
+  repository: next-course-service
   tag: latest
   pullPolicy: IfNotPresent
 

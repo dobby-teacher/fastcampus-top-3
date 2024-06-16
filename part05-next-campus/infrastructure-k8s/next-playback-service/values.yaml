@@ -1,13 +1,14 @@
 replicaCount: 1
 
 image:
-  repository: next-gateway
+  repository: next-playback-service
   tag: latest
   pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
-  port: 8080
+  httpPort: 8080
+  grpcPort: 9090
 
 resources:
   limits:

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: next-course-service
+description: Next Course 서비스를 위한 Helm 차트
+version: 0.1.0
+appVersion: "1.0"

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: next-enrollment-service
+description: Next Enrollment 서비스를 위한 Helm 차트
+version: 0.1.0
+appVersion: "1.0"

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebSocket Test</title>
+    <script>
+        var ws;
+
+        function connectWebSocket() {
+            ws = new WebSocket('ws://localhost:8025/websocket');
+
+            ws.onmessage = function(event) {
+                document.getElementById('messages').innerText += "Received: " + event.data + '\n';
+            };
+
+            ws.onopen = function(event) {
+                console.log('Connection opened!');
+            };
+
+            ws.onerror = function(error) {
+                console.error('WebSocket error:', error);
+            };
+
+            ws.onclose = function(event) {
+                console.log('Connection closed!');
+                document.getElementById('messages').innerText += "Connection closed\n";
+            };
+        }
+
+        function sendMessage() {
+            var message = document.getElementById('message').value;
+            if (ws && ws.readyState === WebSocket.OPEN) {
+                ws.send(message);
+            } else {
+                console.error('WebSocket is not connected.');
+            }
+        }
+
+        // Automatically open WebSocket connection when the document loads
+        document.addEventListener("DOMContentLoaded", connectWebSocket);
+    </script>
+</head>
+<body>
+<h1>WebSocket Client</h1>
+<input type="text" id="message" placeholder="Enter message here">
+<button onclick="sendMessage()">Send Message</button>
+<pre id="messages"></pre>
+</body>
+</html>

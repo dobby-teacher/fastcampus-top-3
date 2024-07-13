@@ -1,0 +1,17 @@
+type Message {
+    id: ID!
+    content: String
+    sender: String
+}
+
+type Query {
+    messages: [Message]
+}
+
+type Mutation {
+    postMessage(content: String, sender: String): Message
+}
+
+type Subscription {
+    messagePosted: Message
+}

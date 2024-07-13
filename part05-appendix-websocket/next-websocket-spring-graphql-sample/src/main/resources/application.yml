@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: next-websocket-spring-graphql-sample
+
+  graphql:
+    graphiql:
+      enabled: true
+      path: /graphiql
+    schema:
+      inspection:
+        enabled: true
+    websocket:
+      path: /graphql
+      keep-alive: 60
+
+  jpa:
+    defer-datasource-initialization: true
+    show-sql: false
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        use_sql_comments: true

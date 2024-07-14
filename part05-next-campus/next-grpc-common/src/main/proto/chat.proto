@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package chat;
+
+// 코스별 채팅 메시지 정보를 담는 구조체
+message ChatMessage {
+  string course_id = 1;
+  string user_id = 2;
+  string message_id = 3;
+  string content = 4;
+  int64 timestamp = 5;
+}
+
+// 메시지 전송 요청
+message SendMessageRequest {
+  ChatMessage message = 1;
+}
+
+// 메시지 전송 응답
+message SendMessageResponse {
+  bool success = 1;
+  string error = 2;
+}
+
+// 서버 스트리밍 RPC를 위한 요청 메시지
+message SubscribeMessagesRequest {
+  string course_id = 1;
+}
+
+// 채팅 서비스 정의
+service ChatService {
+  rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
+  rpc SubscribeMessages(SubscribeMessagesRequest) returns (stream ChatMessage);
+}

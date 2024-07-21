@@ -25,6 +25,9 @@ type Query {
 
     # 특정 사용자의 모든 등록 정보를 조회합니다.
     getUserEnrollments(userId: ID!): [Enrollment] @authenticate @authorize(role: "user", permission: "read_enrollment")
+
+    # 특정 코스에 대한 메시지를 가져오는 쿼리
+    getMessages(courseId: String!): [ChatMessage]
 }
 
 type Mutation {
@@ -60,6 +63,21 @@ type Mutation {
 
     # 구독 결제 정보를 생성합니다.
     purchaseSubscription(userId: ID!, amount: Float!, paymentMethod: String!): Payment @authenticate @authorize(role: "user", permission: "update_purchase")
+
+    # 새로운 채팅 메시지를 보내는 뮤테이션
+    sendMessage(courseId: String!, userId: String!, content: String!): Boolean!
+}
+
+type Subscription {
+    messageReceived(courseId: String!): ChatMessage
+}
+
+type ChatMessage {
+    courseId: String!
+    userId: String!
+    messageId: String!
+    content: String!
+    timestamp: String!
 }
 
 # 사용자 정보를 나타내는 타입입니다.

@@ -1,7 +1,7 @@
 package com.fastcampus.nextcoursechatservice.domain;
 
-import chat.Chat;
-import chat.ChatServiceGrpc;
+import com.fastcampus.nextchatservice.domain.chat.Chat;
+import com.fastcampus.nextchatservice.domain.chat.ChatServiceGrpc;
 import io.grpc.stub.StreamObserver;
 import lombok.extern.slf4j.Slf4j;
 import net.devh.boot.grpc.server.service.GrpcService;

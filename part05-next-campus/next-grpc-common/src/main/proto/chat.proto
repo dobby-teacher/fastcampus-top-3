@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package chat;
+package com.fastcampus.nextchatservice.domain.chat;
 
 // 코스별 채팅 메시지 정보를 담는 구조체
 message ChatMessage {

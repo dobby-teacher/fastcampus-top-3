@@ -9,6 +9,9 @@ spring:
     schema:
       inspection:
         enabled: true
+    websocket:
+      path: /graphql
+      keep-alive: 60
   data:
     redis:
       host: localhost
@@ -36,6 +39,11 @@ grpc:
       negotiationType: plaintext
     next-enrollment-service:
       address: 'discovery:///next-enrollment-service'
+      enableKeepAlive: true
+      keepAliveWithoutCalls: true
+      negotiationType: plaintext
+    next-chat-service:
+      address: 'discovery:///next-course-chat-service'
       enableKeepAlive: true
       keepAliveWithoutCalls: true
       negotiationType: plaintext

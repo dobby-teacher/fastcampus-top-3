@@ -6,8 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.reactivestreams.Publisher;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
 import org.springframework.stereotype.Controller;
+
+import java.util.List;
 
 @Controller
 @Slf4j
@@ -28,6 +31,11 @@ public class ChatController {
     @SubscriptionMapping
     public Publisher<ChatMessage> messageReceived(@Argument String courseId) {
         return chatService.messageReceived(courseId);
+    }
+
+    @QueryMapping
+    public List<ChatMessage> getMessages(@Argument String courseId) {
+        return chatService.getMessages(courseId);
     }
 
 }

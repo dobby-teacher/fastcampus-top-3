@@ -36,6 +36,13 @@ spring:
           filters:
             - AuthenticationFilter
 
+        - id: graphql_subscription_route
+          uri: lb:ws://next-graphql
+          predicates:
+            - Path=/graphql
+          filters:
+            - AuthenticationFilter
+
       global-cors:
         cors-configurations:
           '[/**]':

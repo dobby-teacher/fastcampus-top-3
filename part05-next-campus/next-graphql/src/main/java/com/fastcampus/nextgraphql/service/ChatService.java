@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.FluxSink;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatService {
@@ -66,5 +68,15 @@ public class ChatService {
                 }
             });
         }, FluxSink.OverflowStrategy.BUFFER);
+    }
+
+    public List<ChatMessage> getMessages(String courseId) {
+        Chat.GetMessagesRequest request = Chat.GetMessagesRequest.newBuilder()
+                .setCourseId(courseId)
+                .build();
+
+        return blockingStub.getMessages(request).getMessagesList().stream()
+                .map(ChatMessage::fromProto)
+                .collect(Collectors.toList());
     }
 }

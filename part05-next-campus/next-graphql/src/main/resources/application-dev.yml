@@ -9,6 +9,9 @@ spring:
     schema:
       inspection:
         enabled: true
+    websocket:
+      path: /graphql
+      keep-alive: 60
   data:
     redis:
       host: next-campus-redis

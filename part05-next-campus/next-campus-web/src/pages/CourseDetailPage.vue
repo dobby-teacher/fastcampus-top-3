@@ -45,6 +45,8 @@
                 </v-col>
               </v-row>
 
+              <ChatComponent :course-id="courseId"></ChatComponent>
+
               <h3>Ratings</h3>
               <v-list>
                 <v-list-item v-for="rating in course.ratings" :key="rating.id">
@@ -70,6 +72,7 @@ import gql from 'graphql-tag';
 import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import apolloClient from '@/apollo';
+import ChatComponent from "@/components/ChatComponent.vue";
 
 const GET_COURSE_DETAILS = gql`
   query GetCourseDetails($userId: ID!, $courseId: ID!) {
@@ -107,6 +110,7 @@ const CHECK_COURSE_ACCESS = gql`
 
 export default {
   name: 'CourseDetailPage',
+  components: {ChatComponent},
   setup() {
     const route = useRoute();
     const userId = ref(localStorage.getItem('userId'));
@@ -154,6 +158,7 @@ export default {
       hasAccess,
       selectedSession,
       selectSession,
+      courseId
     };
   },
 };

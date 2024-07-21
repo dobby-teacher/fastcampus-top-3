@@ -16,6 +16,7 @@
     "core-js": "^3.8.3",
     "graphql": "^16.8.1",
     "graphql-tag": "^2.12.6",
+    "graphql-ws": "^5.16.0",
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vue-router": "^4.3.2",

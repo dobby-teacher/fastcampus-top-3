@@ -13,6 +13,10 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @GrpcService
 @Slf4j
@@ -83,4 +87,35 @@ public class ChatService extends ChatServiceGrpc.ChatServiceImplBase {
 
     }
 
+    @Override
+    public void getMessages(Chat.GetMessagesRequest request, StreamObserver<Chat.GetMessagesResponse> responseObserver) {
+        String courseId = request.getCourseId();
+        String pattern = "course:" + courseId + ":message:*";
+
+        try {
+            Set<String> keys = redisTemplate.keys(pattern);
+            List<Chat.ChatMessage> messages = new ArrayList<>();
+            if (keys != null) {
+                for (String key : keys) {
+                    Map<Object, Object> messageData = redisTemplate.opsForHash().entries(key);
+                    Chat.ChatMessage message = Chat.ChatMessage.newBuilder()
+                            .setCourseId(courseId)
+                            .setUserId((String) messageData.get("user_id"))
+                            .setMessageId(key.split(":")[3])
+                            .setContent((String) messageData.get("content"))
+                            .setTimestamp(Long.parseLong((String) messageData.get("timestamp")))
+                            .build();
+                    messages.add(message);
+                }
+            }
+            Chat.GetMessagesResponse response = Chat.GetMessagesResponse.newBuilder()
+                    .addAllMessages(messages)
+                    .build();
+            responseObserver.onNext(response);
+        } catch (Exception e) {
+            log.error("getMessages error : ", e);
+            responseObserver.onError(e);
+        }
+        responseObserver.onCompleted();
+    }
 }

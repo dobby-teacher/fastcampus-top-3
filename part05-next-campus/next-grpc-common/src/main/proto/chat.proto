@@ -16,6 +16,14 @@ message SendMessageRequest {
   ChatMessage message = 1;
 }
 
+message GetMessagesRequest {
+  string course_id = 1;
+}
+
+message GetMessagesResponse {
+  repeated ChatMessage messages = 1;
+}
+
 // 메시지 전송 응답
 message SendMessageResponse {
   bool success = 1;
@@ -31,4 +39,5 @@ message SubscribeMessagesRequest {
 service ChatService {
   rpc SendMessage(SendMessageRequest) returns (SendMessageResponse);
   rpc SubscribeMessages(SubscribeMessagesRequest) returns (stream ChatMessage);
+  rpc GetMessages(GetMessagesRequest) returns (GetMessagesResponse);
 }
